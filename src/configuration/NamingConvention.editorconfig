@@ -30,6 +30,14 @@ dotnet_naming_symbols.private_internal_fields.applicable_accessibilities = priva
 dotnet_naming_style.camel_case_underscore_style.required_prefix = _
 dotnet_naming_style.camel_case_underscore_style.capitalization = camel_case
 
+# name all constant variables using PascalCase
+dotnet_naming_rule.constant_variables_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.constant_variables_should_be_pascal_case.symbols  = constant_variables
+dotnet_naming_rule.constant_variables_should_be_pascal_case.style    = pascal_case_style
+dotnet_naming_symbols.constant_variables.applicable_kinds   = local
+dotnet_naming_symbols.constant_variables.required_modifiers = const
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
 # Locals and parameters are camelCase
 dotnet_naming_rule.locals_should_be_camel_case.severity = suggestion
 dotnet_naming_rule.locals_should_be_camel_case.symbols = locals_and_parameters
