@@ -10,7 +10,7 @@
         <AnalysisLevel Condition="$(AnalysisLevel) == ''">latest</AnalysisLevel>
 
         <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' AND $(ContinuousIntegrationBuild) == 'true'">true</TreatWarningsAsErrors>
-        <EnforceCodeStyleInBuild Condition="'$( EnforceCodeStyleInBuild )' == '' AND $(ContinuousIntegrationBuild) == 'true'">true</EnforceCodeStyleInBuild>
+        <EnforceCodeStyleInBuild Condition="'$(EnforceCodeStyleInBuild)' == '' AND $(ContinuousIntegrationBuild) == 'true'">true</EnforceCodeStyleInBuild>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,0 +1,78 @@
+name: publish
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "*"
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  NuGetDirectory: ${{ github.workspace}}/nuget
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  create_nuget:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v2
+      - run: |
+          try
+          {
+            $(Invoke-WebRequest "https://www.nuget.org/api/v2/package/Meziantou.ProjectConfiguration/").BaseResponse.RequestMessage.RequestUri -match "meziantou\.projectconfiguration\.1\.0\.([0-9]+).nupkg$"
+            $NewVersion = "1.0.$([int]$Matches.1 + 1)"
+          }
+          catch
+          {
+            $NewVersion = "1.0.0"
+          }
+          
+          Write-Host "New version: $NewVersion"
+          Write-Host "::set-output name=package_version::$NewVersion"
+        name: Compute version
+        id: compute-version
+      - run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.compute-version.outputs.package_version }} /bl
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nuget
+          if-no-files-found: error
+          retention-days: 3
+          path: "**/*.nupkg"
+
+  deploy:
+    runs-on: "ubuntu-20.04"
+    needs: [create_nuget]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: nuget
+          path: ${{ env.NuGetDirectory }}
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v2
+      - run: |
+          Write-Host "Current ref: $env:GITHUB_REF"
+          Write-Host "Searching nupkg in folder: ${{ env.NuGetDirectory }}"
+          $files = Get-ChildItem "${{ env.NuGetDirectory }}/*" -Recurse -Include *.nupkg
+          foreach($file in $files) {
+              Write-Host "Pushing NuGet package: $($file.FullName)"
+              if ($env:GITHUB_REF -eq 'refs/heads/main')
+              {
+                & dotnet nuget push "$($file.FullName)" --api-key "$env:NuGetApiKey" --source https://api.nuget.org/v3/index.json --force-english-output --skip-duplicate
+              }
+              else
+              {
+                Write-Host "Not on the default branch => Do not push"
+              }
+          }
+        name: Publish NuGet packages
+        if: always()
+        env:
+          NuGetApiKey: ${{ secrets.NuGetApiKey }}
