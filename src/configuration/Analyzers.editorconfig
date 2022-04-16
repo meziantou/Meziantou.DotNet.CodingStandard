@@ -26,6 +26,8 @@ dotnet_diagnostic.CA1816.severity = none
 # Superseeded by MA0004
 dotnet_diagnostic.CA2007.severity = none
 
+dotnet_diagnostic.MA0001.severity = warning
+
 # Use .ConfigureAwait(false)
 dotnet_diagnostic.MA0004.severity = warning
 
