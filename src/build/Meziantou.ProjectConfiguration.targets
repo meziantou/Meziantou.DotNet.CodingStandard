@@ -28,6 +28,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-         <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\configuration\BannedSymbols.txt" Condition="$(IncludeDefaultBannedSymbols) != 'false'" Visible="false" />
+         <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\configuration\BannedSymbols.txt" Condition="$(IncludeDefaultBannedSymbols) == 'true'" Visible="false" />
     </ItemGroup>
 </Project>
