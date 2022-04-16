@@ -32,8 +32,10 @@
     <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" />
     <PackageReference Include="Meziantou.Analyzer" Version="1.0.700" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.1.46" />
-    <PackageReference Include="AsyncFixer" Version="1.5.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="3.3.3" />
+
+    <!-- Disable as it may generate too many false-positive -->
+    <!-- <PackageReference Include="AsyncFixer" Version="1.5.1" /> -->
   </ItemGroup>
 
   <!-- SourceLink and Reproducible Builds: https://www.meziantou.net/2018/07/09/how-to-debug-nuget-packages-using-sourcelink -->
