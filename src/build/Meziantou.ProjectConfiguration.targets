@@ -5,9 +5,13 @@
 
         <Features Condition="$(Features) == ''">strict</Features>
 
+        <Deterministic Condition="$(Deterministic) == ''">true</Deterministic>
+
+        <NoWarn>$(NoWarn);CA1014</NoWarn>
+
         <EnableNETAnalyzers Condition="$(EnableNETAnalyzers) == ''">true</EnableNETAnalyzers>
-        <AnalysisMode Condition="$(AnalysisMode) == ''">AllEnabledByDefault</AnalysisMode>
-        <AnalysisLevel Condition="$(AnalysisLevel) == ''">latest</AnalysisLevel>
+        <AnalysisMode Condition="$(AnalysisMode) == ''">All</AnalysisMode>
+        <AnalysisLevel Condition="$(AnalysisLevel) == ''">preview</AnalysisLevel>
 
         <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' AND $(ContinuousIntegrationBuild) == 'true'">true</TreatWarningsAsErrors>
         <EnforceCodeStyleInBuild Condition="'$(EnforceCodeStyleInBuild)' == '' AND $(ContinuousIntegrationBuild) == 'true'">true</EnforceCodeStyleInBuild>
@@ -15,7 +19,7 @@
 
     <ItemGroup>
         <!-- Add all editorconfig files -->
-        <EditorConfigFiles Include="$(MSBuildThisFileDirectory)\..\content\*.editorconfig" />
+        <EditorConfigFiles Include="$(MSBuildThisFileDirectory)\..\configuration\*.editorconfig" />
 
         <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" Condition="@(PackageReference) != '' and @(PackageReference->AnyHaveMetadataValue('Identity', 'DotNet.ReproducibleBuilds')) == ''">
             <PrivateAssets>all</PrivateAssets>
@@ -49,6 +53,6 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
 
-        <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\content\BannedSymbols.txt" Condition="$(IncludeDefaultBannedSymbols) != 'false'" Visible="false" />
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\configuration\BannedSymbols.txt" Condition="$(IncludeDefaultBannedSymbols) != 'false'" Visible="false" />
     </ItemGroup>
 </Project>
