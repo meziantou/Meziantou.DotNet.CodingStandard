@@ -1,0 +1,54 @@
+<Project>
+    <PropertyGroup>
+        <RestoreUseStaticGraphEvaluation>true</RestoreUseStaticGraphEvaluation>
+        <ReportAnalyzer>true</ReportAnalyzer>
+
+        <Features Condition="$(Features) == ''">strict</Features>
+
+        <EnableNETAnalyzers Condition="$(EnableNETAnalyzers) == ''">true</EnableNETAnalyzers>
+        <AnalysisMode Condition="$(AnalysisMode) == ''">AllEnabledByDefault</AnalysisMode>
+        <AnalysisLevel Condition="$(AnalysisLevel) == ''">latest</AnalysisLevel>
+
+        <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' AND $(ContinuousIntegrationBuild) == 'true'">true</TreatWarningsAsErrors>
+        <EnforceCodeStyleInBuild Condition="'$( EnforceCodeStyleInBuild )' == '' AND $(ContinuousIntegrationBuild) == 'true'">true</EnforceCodeStyleInBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- Add all editorconfig files -->
+        <EditorConfigFiles Include="$(MSBuildThisFileDirectory)\..\content\*.editorconfig" />
+
+        <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" Condition="@(PackageReference) != '' and @(PackageReference->AnyHaveMetadataValue('Identity', 'DotNet.ReproducibleBuilds')) == ''">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+
+        <PackageReference Include="Meziantou.Analyzer" Version="1.0.700" Condition="@(PackageReference) != '' and @(PackageReference->AnyHaveMetadataValue('Identity', 'Meziantou.Analyzer')) == ''">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+
+        <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.1.46" Condition="@(PackageReference) != '' and @(PackageReference->AnyHaveMetadataValue('Identity', 'Microsoft.VisualStudio.Threading.Analyzers')) == ''">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+
+        <PackageReference Include="AsyncFixer" Version="1.5.1" Condition="@(PackageReference) != '' and @(PackageReference->AnyHaveMetadataValue('Identity', 'AsyncFixer')) == ''">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <!-- Banned Symbols -->
+    <PropertyGroup>
+        <IncludeDefaultBannedSymbols Condition="$(IncludeDefaultBannedSymbols) == ''">true</IncludeDefaultBannedSymbols>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="3.3.3" Condition="@(PackageReference) != '' and @(PackageReference->AnyHaveMetadataValue('Identity', 'Microsoft.CodeAnalysis.BannedApiAnalyzers')) == ''">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\content\BannedSymbols.txt" Condition="$(IncludeDefaultBannedSymbols) != 'false'" Visible="false" />
+    </ItemGroup>
+</Project>

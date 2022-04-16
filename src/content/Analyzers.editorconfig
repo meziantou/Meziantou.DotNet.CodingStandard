@@ -1,0 +1,75 @@
+is_global = true
+global_level = 0 # higher than the NET Analyzer files
+
+dotnet_code_quality_unused_parameters=all:warning
+
+# Mark assemblies with CLSCompliantAttribute
+dotnet_diagnostic.CA1014.severity = none
+
+# Implement IDisposable correctly
+# The Dispose pattern is useless most of the time.
+dotnet_diagnostic.CA1063.severity = none
+
+# Do not pass literals as localized parameters
+# This is only needed for localized application
+dotnet_diagnostic.CA1303.severity = none
+
+# Specify IFormatProvider
+# MA rules better handle exceptions (bool, Guid, etc.)
+dotnet_diagnostic.CA1305.severity = none
+
+# Call GC.SuppressFinalize correctly. 
+# Use SafeHandle when possible: https://www.meziantou.net/stop-using-intptr-for-dealing-with-system-handles.htm
+dotnet_diagnostic.CA1816.severity = none
+
+# CA2007: Do not directly await a Task
+# Superseeded by MA0004
+dotnet_diagnostic.CA2007.severity = none
+
+# Use .ConfigureAwait(false)
+dotnet_diagnostic.MA0004.severity = warning
+
+# use String.Equals
+dotnet_diagnostic.MA0006.severity = silent
+
+# Make property static
+# Superseeded by CA1822
+dotnet_diagnostic.MA0041.severity = none
+
+# Method is too long
+dotnet_diagnostic.MA0051.severity = none
+
+# Avoid using redundant else
+dotnet_diagnostic.MA0071.severity = silent
+
+# Simplify name
+dotnet_diagnostic.IDE0001.severity = suggestion
+
+# Simplify member access
+dotnet_diagnostic.IDE0002.severity = suggestion
+
+# Remove unnecessary cast
+dotnet_diagnostic.IDE0004.severity = suggestion
+
+# Remove unnecessary import
+dotnet_diagnostic.IDE0005.severity = suggestion
+
+# Remove unreachable code
+dotnet_diagnostic.IDE0035.severity = warning
+
+# Remove unused private member
+dotnet_diagnostic.IDE0051.severity = warning
+
+# Remove unread private member
+dotnet_diagnostic.IDE0052.severity = warning
+
+# Remove unnecessary value assignment
+dotnet_diagnostic.IDE0059.severity = warning
+csharp_style_unused_value_assignment_preference = discard_variable
+
+# Remove unused parameter
+dotnet_diagnostic.IDE0060.severity = warning
+dotnet_code_quality_unused_parameters = all
+
+# Remove unnecessary value assignment
+dotnet_diagnostic.IDE1006.severity = warning

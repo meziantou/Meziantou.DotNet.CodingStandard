@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <NoBuild>true</NoBuild>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <Version>0.0.6</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>Meziantou</Authors>
+    <Company>Meziantou</Company>
+    <Description>A package to configure .NET coding style and static analysis</Description>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)\icon.png" Pack="true" PackagePath="" />
+    <None Include="$(MSBuildThisFileDirectory)\LICENSE.txt" Pack="true" PackagePath="" />
+    <None Include="$(MSBuildThisFileDirectory)\README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="src/**/*" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <!-- SourceLink and Reproducible Builds: https://www.meziantou.net/2018/07/09/how-to-debug-nuget-packages-using-sourcelink -->
+  <ItemGroup>
+    <SourceRoot Include="$(MSBuildThisFileDirectory)/" />
+
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

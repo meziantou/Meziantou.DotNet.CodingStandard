@@ -1,0 +1,3 @@
+P:System.DateTime.Now;Use System.DateTime.UtcNow instead
+P:System.DateTimeOffset.Now;Use System.DateTimeOffset.UtcNow instead
+M:System.IO.File.GetCreationTime(System.String);Use GetCreationTimeUtc instead
