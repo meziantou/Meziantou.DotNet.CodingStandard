@@ -20,26 +20,6 @@
     <ItemGroup>
         <!-- Add all editorconfig files -->
         <EditorConfigFiles Include="$(MSBuildThisFileDirectory)\..\configuration\*.editorconfig" />
-
-        <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" Condition="@(PackageReference) != '' and @(PackageReference->AnyHaveMetadataValue('Identity', 'DotNet.ReproducibleBuilds')) == ''">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
-
-        <PackageReference Include="Meziantou.Analyzer" Version="1.0.700" Condition="@(PackageReference) != '' and @(PackageReference->AnyHaveMetadataValue('Identity', 'Meziantou.Analyzer')) == ''">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
-
-        <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.1.46" Condition="@(PackageReference) != '' and @(PackageReference->AnyHaveMetadataValue('Identity', 'Microsoft.VisualStudio.Threading.Analyzers')) == ''">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
-
-        <PackageReference Include="AsyncFixer" Version="1.5.1" Condition="@(PackageReference) != '' and @(PackageReference->AnyHaveMetadataValue('Identity', 'AsyncFixer')) == ''">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
     </ItemGroup>
 
     <!-- Banned Symbols -->
