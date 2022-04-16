@@ -75,3 +75,6 @@ dotnet_code_quality_unused_parameters = all
 
 # Remove unnecessary value assignment
 dotnet_diagnostic.IDE1006.severity = warning
+
+# Use "Async" suffix in names of methods that return an awaitable type
+dotnet_diagnostic.VSTHRD200.severity = none
