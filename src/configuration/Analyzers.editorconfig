@@ -76,12 +76,15 @@ dotnet_code_quality_unused_parameters = all
 # Remove unnecessary value assignment
 dotnet_diagnostic.IDE1006.severity = warning
 
-# Avoid awaiting foreign Tasks
-dotnet_diagnostic.VSTHRD003.severity = none
+# Avoid legacy thread switching methods
+dotnet_diagnostic.VSTHRD001.severity = none
 
 # Synchronously waiting on tasks or awaiters may cause deadlocks. Use await or JoinableTaskFactory.Run instead.
 # Superseed by MA0032
 dotnet_diagnostic.VSTHRD002.severity = none
+
+# Avoid awaiting foreign Tasks
+dotnet_diagnostic.VSTHRD003.severity = none
 
 # Use AsyncLazy<T>
 dotnet_diagnostic.VSTHRD011.severity = none
