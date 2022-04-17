@@ -8,6 +8,14 @@
     <SourceLinkGitLabHost Include="$(CI_SERVER_HOST)" Version="$(CI_SERVER_VERSION)" Condition="$(CI_SERVER_HOST) != ''" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- GitHub Actions -->
+    <SourceRoot Include="$(GITHUB_WORKSPACE)" Condition="$(GITHUB_WORKSPACE) != ''" />
+
+    <!-- GitLab CI -->
+    <SourceRoot Include="$(CI_PROJECT_DIR)" Condition="$(CI_PROJECT_DIR) != ''" />
+  </ItemGroup>
+
   <!-- Enable ContinuousIntegrationBuild when running on CI -->
   <PropertyGroup>
     <!-- Azure Pipelines / DevOpsServer -->
@@ -19,7 +27,7 @@
     <!-- AppVeyor -->
     <ContinuousIntegrationBuild Condition="'$(APPVEYOR)' == 'true'">true</ContinuousIntegrationBuild>
 
-    <!-- GitLab https://docs.gitlab.com/ee/ci/variables/predefined_variables.html -->
+    <!-- GitLab CI https://docs.gitlab.com/ee/ci/variables/predefined_variables.html -->
     <ContinuousIntegrationBuild Condition="'$(GITLAB_CI)' == 'true'">true</ContinuousIntegrationBuild>
 
     <!-- Set by many build agents -->
