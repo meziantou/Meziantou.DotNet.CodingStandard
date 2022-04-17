@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <SourceLinkGitLabHost Include="$(CI_SERVER_HOST)" Version="$(CI_SERVER_VERSION)" Condition="'$(CI_SERVER_HOST)' != ''" />
+    <SourceLinkGitLabHost Include="gitlab.com" />
   </ItemGroup>
 
   <ItemGroup>
