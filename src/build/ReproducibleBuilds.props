@@ -8,14 +8,6 @@
     <SourceLinkGitLabHost Include="gitlab.com" />
   </ItemGroup>
 
-  <ItemGroup>
-    <!-- GitHub Actions -->
-    <SourceRoot Include="$(GITHUB_WORKSPACE)" Condition="'$(GITHUB_WORKSPACE)' != ''" />
-
-    <!-- GitLab CI -->
-    <SourceRoot Include="$(CI_PROJECT_DIR)" Condition="'$(CI_PROJECT_DIR)' != ''" />
-  </ItemGroup>
-
   <!-- Enable ContinuousIntegrationBuild when running on CI -->
   <PropertyGroup>
     <!-- Azure Pipelines / DevOpsServer -->
