@@ -22,7 +22,7 @@ defaults:
 
 jobs:
   create_nuget:
-    runs-on: ubuntu-20.04
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
       - name: Setup .NET Core
@@ -42,7 +42,8 @@ jobs:
           Write-Host "::set-output name=package_version::$NewVersion"
         name: Compute version
         id: compute-version
-      - run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.compute-version.outputs.package_version }} /bl
+
+      - run: nuget pack Meziantou.ProjectConfiguration.nuspec -ForceEnglishOutput -Version ${{ steps.compute-version.outputs.package_version }} -Properties "RepositoryCommit=${{ github.sha }};RepositoryBranch=${{ github.ref_name }};RepositoryUrl=${{ github.repositoryUrl }}"
       - uses: actions/upload-artifact@v3
         with:
           name: nuget

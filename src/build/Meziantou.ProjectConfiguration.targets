@@ -5,7 +5,7 @@
 
         <Features Condition="$(Features) == ''">strict</Features>
 
-        <Deterministic Condition="$(Deterministic) == ''">true</Deterministic>
+        <Deterministic>true</Deterministic>
 
         <NoWarn>$(NoWarn);CA1014</NoWarn>
 
@@ -30,4 +30,6 @@
     <ItemGroup>
          <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\configuration\BannedSymbols.txt" Condition="$(IncludeDefaultBannedSymbols) == 'true'" Visible="false" />
     </ItemGroup>
+
+    <Import Project="$(MSBuildThisFileDirectory)/ReproducibleBuilds.targets" />
 </Project>

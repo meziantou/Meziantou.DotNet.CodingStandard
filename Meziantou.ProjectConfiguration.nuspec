@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Meziantou.ProjectConfiguration</id>
+    <version>$version$</version>
+    <authors>meziantou</authors>
+    <developmentDependency>true</developmentDependency>
+    <license type="file">LICENSE.txt</license>    
+    <readme>README.md</readme>
+    <icon>icon.png</icon>
+    <projectUrl>https://github.com/meziantou/Meziantou.ProjectConfiguration</projectUrl>
+    <description>A package to configure .NET coding style and static analysis</description>
+    
+    <repository type="git" url="$RepositoryUrl$" commit="$RepositoryCommit$" branch="$RepositoryBranch$" />
+    <dependencies>
+      <dependency id="Microsoft.SourceLink.AzureRepos.Git" version="1.1.1" />
+      <dependency id="Microsoft.SourceLink.Bitbucket.Git" version="1.1.1" />
+      <dependency id="Microsoft.SourceLink.GitHub" version="1.1.1" />
+      <dependency id="Microsoft.SourceLink.GitLab" version="1.1.1" />
+
+      <dependency id="Meziantou.Analyzer" version="1.0.700" />
+      <dependency id="Microsoft.VisualStudio.Threading.Analyzers" version="17.1.46" />
+      <dependency id="Microsoft.CodeAnalysis.BannedApiAnalyzers" version="3.3.3" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="src\**" target="" />
+    <file src="LICENSE.txt" target="" />
+    <file src="icon.png" target="" />
+    <file src="README.md" target="" />
+  </files>
+</package>

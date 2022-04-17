@@ -1,1 +1,0 @@
-dotnet pack .\Meziantou.ProjectConfiguration.proj --output .nupkg

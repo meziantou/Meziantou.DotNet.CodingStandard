@@ -1,0 +1,49 @@
+<Project>
+  <PropertyGroup>
+    <!-- Embed symbols containing Source Link in the main file (exe/dll) -->
+    <DebugType Condition="'$(DebugType)' == ''">embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SourceLinkGitLabHost Include="$(CI_SERVER_HOST)" Version="$(CI_SERVER_VERSION)" Condition="$(CI_SERVER_HOST) != ''" />
+  </ItemGroup>
+
+  <!-- Enable ContinuousIntegrationBuild when running on CI -->
+  <PropertyGroup>
+    <!-- Azure Pipelines / DevOpsServer -->
+    <ContinuousIntegrationBuild Condition="'$(TF_BUILD)' == 'true'">true</ContinuousIntegrationBuild>
+
+    <!-- GitHub Actions -->
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+
+    <!-- AppVeyor -->
+    <ContinuousIntegrationBuild Condition="'$(APPVEYOR)' == 'true'">true</ContinuousIntegrationBuild>
+
+    <!-- GitLab https://docs.gitlab.com/ee/ci/variables/predefined_variables.html -->
+    <ContinuousIntegrationBuild Condition="'$(GITLAB_CI)' == 'true'">true</ContinuousIntegrationBuild>
+
+    <!-- Set by many build agents -->
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+
+    <!-- Travis CI -->
+    <ContinuousIntegrationBuild Condition="'$(TRAVIS)' == 'true'">true</ContinuousIntegrationBuild>
+
+    <!-- Circle CI -->
+    <ContinuousIntegrationBuild Condition="'$(CIRCLECI)' == 'true'">true</ContinuousIntegrationBuild>
+
+    <!-- AWS CodeBuild -->
+    <ContinuousIntegrationBuild Condition="'$(CODEBUILD_BUILD_ID)' != '' and '$(AWS_REGION)' != ''">true</ContinuousIntegrationBuild>
+
+    <!-- Jenkins https://www.jenkins.io/doc/book/pipeline/jenkinsfile/#using-environment-variables -->
+    <ContinuousIntegrationBuild Condition="'$(BUILD_ID)' != '' and '$(BUILD_URL)' != ''">true</ContinuousIntegrationBuild>
+
+    <!-- Google Cloud Build https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values -->
+    <ContinuousIntegrationBuild Condition="'$(BUILD_ID)' != '' and '$(PROJECT_ID)' != ''">true</ContinuousIntegrationBuild>
+
+    <!-- TeamCity https://www.jetbrains.com/help/teamcity/predefined-build-parameters.html#Server+Build+Properties -->
+    <ContinuousIntegrationBuild Condition="'$(TEAMCITY_VERSION)' != ''">true</ContinuousIntegrationBuild>
+
+    <!-- JetBrains Space https://www.jetbrains.com/help/space/automation-environment-variables.html#general -->
+    <ContinuousIntegrationBuild Condition="'$(JB_SPACE_API_URL)' != ''">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,24 @@
+<Project>
+    <PropertyGroup>
+      <!-- Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+      <PublishRepositoryUrl Condition="'$(PublishRepositoryUrl)' == ''">true</PublishRepositoryUrl>
+  
+      <!-- Embed source files that are not tracked by the source control manager in the PDB -->
+      <EmbedUntrackedSources Condition="'$(EmbedUntrackedSources)' == ''">true</EmbedUntrackedSources>
+  
+      <!-- Enable WPF projects to process package references so source link works 
+           We only need this enabled for 5.0 SDKs; 6.0 defaults to it on.
+      -->
+      <IncludePackageReferencesDuringMarkupCompilation  Condition="'$(IncludePackageReferencesDuringMarkupCompilation)' == '' and '$(BundledNETCoreAppTargetFrameworkVersion)' == '5.0'" >true</IncludePackageReferencesDuringMarkupCompilation>
+    </PropertyGroup>
+  
+    <PropertyGroup>
+      <_ReproducibleBuildsMSBuildMinVersion>16.10.0</_ReproducibleBuildsMSBuildMinVersion>
+    </PropertyGroup>
+  
+    <Target Name="_ReproducibleBuildsMSBuildVersionCheck"
+            Condition=" '$([System.Version]::Parse($(_ReproducibleBuildsMSBuildMinVersion)).CompareTo($([System.Version]::Parse($(MSBuildVersion)))))' &gt; '0' "
+            BeforeTargets="ResolveAssemblyReferences;Build;Rebuild" >
+      <Warning Text = "Reproducible builds require MSBuild '$(_ReproducibleBuildsMSBuildMinVersion)' or later. This project is using '$(MSBuildVersion)'. Use .NET SDK 5.0.300 or VS 16.10 or later." />
+    </Target>
+  </Project>
