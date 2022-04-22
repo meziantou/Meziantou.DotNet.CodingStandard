@@ -1,18 +1,5 @@
 <Project>
     <PropertyGroup>
-        <RestoreUseStaticGraphEvaluation>true</RestoreUseStaticGraphEvaluation>
-        <ReportAnalyzer>true</ReportAnalyzer>
-
-        <Features Condition="$(Features) == ''">strict</Features>
-
-        <Deterministic>true</Deterministic>
-
-        <NoWarn>$(NoWarn);CA1014</NoWarn>
-
-        <EnableNETAnalyzers Condition="$(EnableNETAnalyzers) == ''">true</EnableNETAnalyzers>
-        <AnalysisMode Condition="$(AnalysisMode) == ''">All</AnalysisMode>
-        <AnalysisLevel Condition="$(AnalysisLevel) == ''">preview</AnalysisLevel>
-
         <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' AND $(ContinuousIntegrationBuild) == 'true'">true</TreatWarningsAsErrors>
         <EnforceCodeStyleInBuild Condition="'$(EnforceCodeStyleInBuild)' == '' AND $(ContinuousIntegrationBuild) == 'true'">true</EnforceCodeStyleInBuild>
     </PropertyGroup>
