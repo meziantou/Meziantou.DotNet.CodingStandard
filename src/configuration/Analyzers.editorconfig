@@ -69,6 +69,9 @@ dotnet_diagnostic.CA2007.severity = none
 # CA2225: Operator overloads have named alternates
 dotnet_diagnostic.CA2225.severity = none
 
+# CA2217: Do not mark enums with FlagsAttribute
+dotnet_diagnostic.CA2217.api_surface = all
+
 # CA2227: Collection properties should be read only
 dotnet_diagnostic.CA2227.severity = none
 
@@ -82,7 +85,7 @@ dotnet_diagnostic.MA0006.severity = silent
 
 # Make method static
 # Superseeded by CA1822
-dotnet_diagnostic.MA0038.severity = silent
+dotnet_diagnostic.MA0038.severity = none
 
 # Make property static
 # Superseeded by CA1822
@@ -90,6 +93,10 @@ dotnet_diagnostic.MA0041.severity = none
 
 # Method is too long
 dotnet_diagnostic.MA0051.severity = none
+
+# Non-flags enums should not be marked with FlagsAttribute
+# Superseeded by CA2217
+dotnet_diagnostic.MA0062.severity = none
 
 # Avoid using redundant else
 dotnet_diagnostic.MA0071.severity = silent
