@@ -1,13 +1,14 @@
 <Project>
     <Import Project="$(MSBuildThisFileDirectory)/ReproducibleBuilds.props" />
     <PropertyGroup>
-        <RestoreUseStaticGraphEvaluation>true</RestoreUseStaticGraphEvaluation>
-        <ReportAnalyzer>true</ReportAnalyzer>
-        <Features>strict</Features>
-        <Deterministic>true</Deterministic>
+        <RestoreUseStaticGraphEvaluation Condition="'$(RestoreUseStaticGraphEvaluation)' == ''">true</RestoreUseStaticGraphEvaluation>
+        <ReportAnalyzer Condition="'$(ReportAnalyzer)' == ''">true</ReportAnalyzer>
+        <Features Condition="'$(Features)' == ''">strict</Features>
+        <Deterministic Condition="'$(Deterministic)' == ''">true</Deterministic>
+        <EnableNETAnalyzers Condition="'$(EnableNETAnalyzers)' == ''">true</EnableNETAnalyzers>
+        <AnalysisLevel Condition="'$(AnalysisLevel)' == ''">latest-all</AnalysisLevel>
         <NoWarn>$(NoWarn);CA1014</NoWarn>
-        <EnableNETAnalyzers>true</EnableNETAnalyzers>
-        <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-        <AnalysisLevel>preview</AnalysisLevel>
+        <AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)' == ''">true</AllowUnsafeBlocks>
+        <LangVersion Condition="'$(LangVersion)' == ''">latest</LangVersion>
     </PropertyGroup>
 </Project>
