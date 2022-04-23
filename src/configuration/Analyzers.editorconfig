@@ -80,6 +80,10 @@ dotnet_diagnostic.MA0004.severity = warning
 # use String.Equals
 dotnet_diagnostic.MA0006.severity = silent
 
+# Make method static
+# Superseeded by CA1822
+dotnet_diagnostic.MA0038.severity = silent
+
 # Make property static
 # Superseeded by CA1822
 dotnet_diagnostic.MA0041.severity = none
