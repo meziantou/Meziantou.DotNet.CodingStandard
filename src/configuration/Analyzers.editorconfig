@@ -6,6 +6,21 @@ dotnet_code_quality_unused_parameters=all:warning
 # Mark assemblies with CLSCompliantAttribute
 dotnet_diagnostic.CA1014.severity = none
 
+# CA1028: Enum Storage should be Int32
+dotnet_diagnostic.CA1028.severity = none
+
+# CA1031: Do not catch general exception types
+dotnet_diagnostic.CA1031.severity = none
+
+# CA1033: Interface methods should be callable by child types
+dotnet_diagnostic.CA1033.severity = none
+
+# CA1043: Use Integral Or String Argument For Indexers
+dotnet_diagnostic.CA1043.severity = none
+
+# CA1062: Validate arguments of public methods
+dotnet_diagnostic.CA1062.severity = none
+
 # Implement IDisposable correctly
 # The Dispose pattern is useless most of the time.
 dotnet_diagnostic.CA1063.severity = none
@@ -18,6 +33,31 @@ dotnet_diagnostic.CA1303.severity = none
 # MA rules better handle exceptions (bool, Guid, etc.)
 dotnet_diagnostic.CA1305.severity = none
 
+# CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1707.severity = none
+
+# CA1710: Identifiers should have correct suffix
+dotnet_diagnostic.CA1710.severity = none
+
+# CA1711: Identifiers should not have incorrect suffix
+dotnet_diagnostic.CA1711.severity = none
+
+# CA1712: Do not prefix enum values with type name
+dotnet_diagnostic.CA1712.severity = none
+
+# CA1713: Events should not have 'Before' or 'After' prefix
+dotnet_diagnostic.CA1713.severity = none
+
+# CA1716: Identifiers should not match keywords
+dotnet_diagnostic.CA1716.severity = none
+
+# CA1721: Property names should not match get methods
+dotnet_diagnostic.CA1721.severity = none
+
+# CA1815: Override equals and operator equals on value types
+# MA0065 reports only when "==" or "GetHashCode" is used
+dotnet_diagnostic.CA1815.severity = none
+
 # Call GC.SuppressFinalize correctly. 
 # Use SafeHandle when possible: https://www.meziantou.net/stop-using-intptr-for-dealing-with-system-handles.htm
 dotnet_diagnostic.CA1816.severity = none
@@ -25,6 +65,12 @@ dotnet_diagnostic.CA1816.severity = none
 # CA2007: Do not directly await a Task
 # Superseeded by MA0004
 dotnet_diagnostic.CA2007.severity = none
+
+# CA2225: Operator overloads have named alternates
+dotnet_diagnostic.CA2225.severity = none
+
+# CA2227: Collection properties should be read only
+dotnet_diagnostic.CA2227.severity = none
 
 dotnet_diagnostic.MA0001.severity = warning
 
