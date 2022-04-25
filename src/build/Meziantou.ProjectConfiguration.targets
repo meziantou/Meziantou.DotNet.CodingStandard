@@ -1,14 +1,4 @@
 <Project>
-    <PropertyGroup>
-        <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' AND $(ContinuousIntegrationBuild) == 'true'">true</TreatWarningsAsErrors>
-        <EnforceCodeStyleInBuild Condition="'$(EnforceCodeStyleInBuild)' == '' AND $(ContinuousIntegrationBuild) == 'true'">true</EnforceCodeStyleInBuild>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <!-- Add all editorconfig files -->
-        <EditorConfigFiles Include="$(MSBuildThisFileDirectory)\..\configuration\*.editorconfig" />
-    </ItemGroup>
-
     <!-- Banned Symbols -->
     <PropertyGroup>
         <IncludeDefaultBannedSymbols Condition="$(IncludeDefaultBannedSymbols) == ''">true</IncludeDefaultBannedSymbols>

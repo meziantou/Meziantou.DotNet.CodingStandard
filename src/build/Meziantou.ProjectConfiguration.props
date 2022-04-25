@@ -10,5 +10,13 @@
         <NoWarn>$(NoWarn);CA1014</NoWarn>
         <AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)' == ''">true</AllowUnsafeBlocks>
         <LangVersion Condition="'$(LangVersion)' == ''">latest</LangVersion>
+        
+        <TreatWarningsAsErrors Condition="$(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+        <EnforceCodeStyleInBuild Condition="$(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release'">true</EnforceCodeStyleInBuild>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <!-- Add all editorconfig files -->
+        <EditorConfigFiles Include="$(MSBuildThisFileDirectory)\..\configuration\*.editorconfig" />
+    </ItemGroup>
 </Project>
