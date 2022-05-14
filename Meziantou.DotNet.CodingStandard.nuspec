@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
-    <id>Meziantou.ProjectConfiguration</id>
+    <id>Meziantou.DotNet.CodingStandard</id>
     <version>$version$</version>
     <authors>meziantou</authors>
     <developmentDependency>true</developmentDependency>
     <license type="file">LICENSE.txt</license>    
     <readme>README.md</readme>
     <icon>icon.png</icon>
-    <projectUrl>https://github.com/meziantou/Meziantou.ProjectConfiguration</projectUrl>
+    <projectUrl>https://github.com/meziantou/Meziantou.DotNet.CodingStandard</projectUrl>
     <description>A package to configure .NET coding style and static analysis</description>
     
     <repository type="git" url="$RepositoryUrl$" commit="$RepositoryCommit$" branch="$RepositoryBranch$" />

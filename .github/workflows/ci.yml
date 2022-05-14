@@ -30,7 +30,7 @@ jobs:
       - run: |
           try
           {
-            $(Invoke-WebRequest "https://www.nuget.org/api/v2/package/Meziantou.ProjectConfiguration/").BaseResponse.RequestMessage.RequestUri -match "meziantou\.projectconfiguration\.1\.0\.([0-9]+).nupkg$"
+            $(Invoke-WebRequest "https://www.nuget.org/api/v2/package/Meziantou.DotNet.CodingStandard/").BaseResponse.RequestMessage.RequestUri -match "meziantou\.projectconfiguration\.1\.0\.([0-9]+).nupkg$"
             $NewVersion = "1.0.$([int]$Matches.1 + 1)"
           }
           catch
@@ -43,7 +43,7 @@ jobs:
         name: Compute version
         id: compute-version
 
-      - run: nuget pack Meziantou.ProjectConfiguration.nuspec -ForceEnglishOutput -Version ${{ steps.compute-version.outputs.package_version }} -Properties "RepositoryCommit=${{ github.sha }};RepositoryBranch=${{ github.ref_name }};RepositoryUrl=${{ github.repositoryUrl }}"
+      - run: nuget pack Meziantou.DotNet.CodingStandard.nuspec -ForceEnglishOutput -Version ${{ steps.compute-version.outputs.package_version }} -Properties "RepositoryCommit=${{ github.sha }};RepositoryBranch=${{ github.ref_name }};RepositoryUrl=${{ github.repositoryUrl }}"
       - uses: actions/upload-artifact@v3
         with:
           name: nuget
