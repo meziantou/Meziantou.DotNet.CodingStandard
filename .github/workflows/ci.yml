@@ -30,7 +30,7 @@ jobs:
       - run: |
           try
           {
-            $(Invoke-WebRequest "https://www.nuget.org/api/v2/package/Meziantou.DotNet.CodingStandard/").BaseResponse.RequestMessage.RequestUri -match "meziantou\.projectconfiguration\.1\.0\.([0-9]+).nupkg$"
+            $(Invoke-WebRequest "https://www.nuget.org/api/v2/package/Meziantou.DotNet.CodingStandard/").BaseResponse.RequestMessage.RequestUri -match "meziantou\.dotnet\.codingstandard\.1\.0\.([0-9]+).nupkg$"
             $NewVersion = "1.0.$([int]$Matches.1 + 1)"
           }
           catch
