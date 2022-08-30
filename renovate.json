@@ -9,5 +9,17 @@
       "matchPackagePatterns": [".*"],
       "groupName": "all"
     }
+  ],
+  "regexManagers": [
+    {
+      "description": "nuspec files manager",
+      "fileMatch": ["\\.nuspec$"],
+      "matchStringsStrategy": "any",
+      "matchStrings": [
+        "<dependency\\s+id=\"(?<depName>.*?)\"\\s+version=\"(?<currentValue>.*?)\"\\s*\\/>"
+      ],
+      "datasourceTemplate": "nuget",
+      "versioningTemplate": "nuget"
+    }
   ]
 }
