@@ -18,8 +18,8 @@
       <dependency id="Microsoft.SourceLink.GitHub" version="1.1.1" />
       <dependency id="Microsoft.SourceLink.GitLab" version="1.1.1" />
 
-      <dependency id="Meziantou.Analyzer" version="1.0.745" />
-      <dependency id="Microsoft.VisualStudio.Threading.Analyzers" version="17.3.48" />
+      <dependency id="Meziantou.Analyzer" version="1.0.747" />
+      <dependency id="Microsoft.VisualStudio.Threading.Analyzers" version="17.4.27" />
       <dependency id="Microsoft.CodeAnalysis.BannedApiAnalyzers" version="3.3.3" />
     </dependencies>
   </metadata>
