@@ -2,6 +2,7 @@ is_global = true
 global_level = 0 # higher than the NET Analyzer files
 
 dotnet_code_quality_unused_parameters=all:warning
+dotnet_style_prefer_foreach_explicit_cast_in_source=when_strongly_typed
 
 # Mark assemblies with CLSCompliantAttribute
 dotnet_diagnostic.CA1014.severity = none
