@@ -39,7 +39,7 @@ jobs:
           }
           
           Write-Host "New version: $NewVersion"
-          Write-Host "::set-output name=package_version::$NewVersion"
+          "package_version=$NewVersion" >> $env:GITHUB_OUTPUT
         name: Compute version
         id: compute-version
 
