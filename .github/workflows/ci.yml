@@ -21,6 +21,14 @@ defaults:
     shell: pwsh
 
 jobs:
+  lint_config:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+      - run: dotnet run --project=tools/ConfigFilesGenerator/ConfigFilesGenerator.csproj
+
   create_nuget:
     runs-on: windows-latest
     steps:
@@ -53,7 +61,7 @@ jobs:
 
   deploy:
     runs-on: "ubuntu-20.04"
-    needs: [create_nuget]
+    needs: [create_nuget, lint_config]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
