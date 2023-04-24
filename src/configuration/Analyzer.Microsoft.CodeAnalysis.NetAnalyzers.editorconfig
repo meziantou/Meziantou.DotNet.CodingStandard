@@ -74,12 +74,12 @@ dotnet_diagnostic.CA1019.severity = warning
 # CA1021: Avoid out parameters
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1021
 # Enabled: False, Severity: warning
-dotnet_diagnostic.CA1021.severity = warning
+dotnet_diagnostic.CA1021.severity = none
 
 # CA1024: Use properties where appropriate
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1024
 # Enabled: False, Severity: warning
-dotnet_diagnostic.CA1024.severity = warning
+dotnet_diagnostic.CA1024.severity = none
 
 # CA1027: Mark enums with FlagsAttribute
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1027
@@ -340,17 +340,17 @@ dotnet_diagnostic.CA1501.severity = warning
 # CA1502: Avoid excessive complexity
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1502
 # Enabled: False, Severity: warning
-dotnet_diagnostic.CA1502.severity = warning
+dotnet_diagnostic.CA1502.severity = none
 
 # CA1505: Avoid unmaintainable code
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1505
 # Enabled: False, Severity: warning
-dotnet_diagnostic.CA1505.severity = warning
+dotnet_diagnostic.CA1505.severity = none
 
 # CA1506: Avoid excessive class coupling
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1506
 # Enabled: False, Severity: warning
-dotnet_diagnostic.CA1506.severity = warning
+dotnet_diagnostic.CA1506.severity = none
 
 # CA1507: Use nameof to express symbol names
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1507

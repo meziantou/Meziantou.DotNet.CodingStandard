@@ -646,3 +646,13 @@ dotnet_diagnostic.MA0128.severity = info
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0129.severity = warning
 
+# MA0130: GetType() should not be used on System.Type instances
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0130.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0130.severity = warning
+
+# MA0131: ArgumentNullException.ThrowIfNull should not be used with non-nullable types
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0131.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0131.severity = warning
+
