@@ -443,7 +443,7 @@ dotnet_diagnostic.CA1721.severity = none
 # CA1724: Type names should not match namespaces
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1724
 # Enabled: False, Severity: warning
-dotnet_diagnostic.CA1724.severity = warning
+dotnet_diagnostic.CA1724.severity = none
 
 # CA1725: Parameter names should match base declaration
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1725
