@@ -333,7 +333,7 @@ dotnet_diagnostic.CA1422.severity = warning
 # CA1501: Avoid excessive inheritance
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1501
 # Enabled: False, Severity: warning
-dotnet_diagnostic.CA1501.severity = warning
+dotnet_diagnostic.CA1501.severity = none
 
 # CA1502: Avoid excessive complexity
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1502
@@ -363,7 +363,7 @@ dotnet_diagnostic.CA1508.severity = warning
 # CA1509: Invalid entry in code metrics rule specification file
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1509
 # Enabled: False, Severity: warning
-dotnet_diagnostic.CA1509.severity = warning
+dotnet_diagnostic.CA1509.severity = none
 
 # CA1510: Use ArgumentNullException throw helper
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1510
