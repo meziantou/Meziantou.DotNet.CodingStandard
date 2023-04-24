@@ -100,7 +100,12 @@ await foreach (var (packageId, packageVersion) in GetReferencedNuGetPackages())
 
         static string GetSeverity(DiagnosticSeverity? severity)
         {
-            return severity is null ? "none" : severity.ToString()!.ToLowerInvariant();
+            return severity switch
+            {
+                null => "none",
+                DiagnosticSeverity.Hidden => "silent",
+                _ => severity.ToString()!.ToLowerInvariant(),
+            };
         }
     }
 }
@@ -241,7 +246,12 @@ static (AnalyzerConfiguration[] Rules, string[] Unknowns) GetConfiguration(FullP
                 if (match.Success)
                 {
                     DiagnosticSeverity? diagnosticSeverity = null;
-                    if (Enum.TryParse<DiagnosticSeverity>(match.Groups["Severity"].Value, ignoreCase: true, out var severity))
+                    var severityValue = match.Groups["Severity"].Value;
+                    if (severityValue == "silent")
+                    {
+                        diagnosticSeverity = DiagnosticSeverity.Hidden;
+                    }
+                    else if (Enum.TryParse<DiagnosticSeverity>(severityValue, ignoreCase: true, out var severity))
                     {
                         diagnosticSeverity = severity;
                     }

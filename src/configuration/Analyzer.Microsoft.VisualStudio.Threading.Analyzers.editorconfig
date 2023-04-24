@@ -95,8 +95,8 @@ dotnet_diagnostic.VSTHRD110.severity = warning
 
 # VSTHRD111: Use ConfigureAwait(bool)
 # Help link: https://github.com/Microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD111.md
-# Enabled: True, Severity: hidden
-dotnet_diagnostic.VSTHRD111.severity = hidden
+# Enabled: True, Severity: silent
+dotnet_diagnostic.VSTHRD111.severity = silent
 
 # VSTHRD112: Implement System.IAsyncDisposable
 # Help link: https://github.com/Microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD112.md

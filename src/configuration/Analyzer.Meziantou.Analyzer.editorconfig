@@ -31,7 +31,7 @@ dotnet_diagnostic.MA0005.severity = none
 # MA0006: Use String.Equals instead of equality operator
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0006.md
 # Enabled: True, Severity: warning
-dotnet_diagnostic.MA0006.severity = hidden
+dotnet_diagnostic.MA0006.severity = silent
 
 # MA0007: Add a comma after the last value
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0007.md
@@ -354,7 +354,7 @@ dotnet_diagnostic.MA0070.severity = warning
 # MA0071: Avoid using redundant else
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0071.md
 # Enabled: True, Severity: info
-dotnet_diagnostic.MA0071.severity = hidden
+dotnet_diagnostic.MA0071.severity = silent
 
 # MA0072: Do not throw from a finally block
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0072.md
@@ -503,8 +503,8 @@ dotnet_diagnostic.MA0100.severity = warning
 
 # MA0101: String contains an implicit end of line character
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0101.md
-# Enabled: True, Severity: hidden
-dotnet_diagnostic.MA0101.severity = hidden
+# Enabled: True, Severity: silent
+dotnet_diagnostic.MA0101.severity = silent
 
 # MA0102: Make member readonly
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0102.md
@@ -559,7 +559,7 @@ dotnet_diagnostic.MA0111.severity = info
 # MA0112: Use 'Count > 0' instead of 'Any()'
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0112.md
 # Enabled: False, Severity: info
-dotnet_diagnostic.MA0112.severity = hidden
+dotnet_diagnostic.MA0112.severity = silent
 
 # MA0113: Use DateTime.UnixEpoch
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0113.md
