@@ -2,8 +2,6 @@
 is_global = true
 global_level = 0
 
-dotnet_code_quality_unused_parameters=all:warning
-dotnet_style_prefer_foreach_explicit_cast_in_source=when_strongly_typed
 dotnet_diagnostic.CA2217.api_surface = all
 
 # CA1000: Do not declare static members on generic types
