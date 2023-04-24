@@ -26,7 +26,7 @@ dotnet_diagnostic.VSTHRD004.severity = error
 # VSTHRD010: Invoke single-threaded types on Main thread
 # Help link: https://github.com/Microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD010.md
 # Enabled: True, Severity: warning
-dotnet_diagnostic.VSTHRD010.severity = warning
+dotnet_diagnostic.VSTHRD010.severity = none
 
 # VSTHRD011: Use AsyncLazy<T>
 # Help link: https://github.com/Microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD011.md
