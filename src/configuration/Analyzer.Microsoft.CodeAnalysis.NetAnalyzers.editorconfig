@@ -57,7 +57,7 @@ dotnet_diagnostic.CA1016.severity = warning
 # CA1017: Mark assemblies with ComVisible
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1017
 # Enabled: False, Severity: warning
-dotnet_diagnostic.CA1017.severity = warning
+dotnet_diagnostic.CA1017.severity = none
 
 # CA1018: Mark attributes with AttributeUsageAttribute
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1018
