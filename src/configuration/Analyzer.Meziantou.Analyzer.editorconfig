@@ -656,3 +656,18 @@ dotnet_diagnostic.MA0130.severity = warning
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0131.severity = warning
 
+# MA0132: Do not convert implicitly to DateTimeOffset
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0132.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0132.severity = warning
+
+# MA0133: Use DateTimeOffset instead of relying on the implicit conversion
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0133.md
+# Enabled: True, Severity: info
+dotnet_diagnostic.MA0133.severity = warning
+
+# MA0134: Observe result of async calls
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0134.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0134.severity = warning
+
