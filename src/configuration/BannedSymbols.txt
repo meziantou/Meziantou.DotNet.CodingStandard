@@ -1,7 +1,13 @@
 P:System.DateTime.Now;Use System.DateTime.UtcNow instead
 P:System.DateTimeOffset.Now;Use System.DateTimeOffset.UtcNow instead
 M:System.IO.File.GetCreationTime(System.String);Use GetCreationTimeUtc instead
+
 F:System.StringComparison.InvariantCulture;Do you mean Ordinal?
 F:System.StringComparison.InvariantCultureIgnoreCase;Do you mean OrdinalIgnoreCase?
 P:System.StringComparer.InvariantCulture;Do you mean Ordinal?
 P:System.StringComparer.InvariantCultureIgnoreCase;Do you mean OrdinalIgnoreCase?
+
+M:System.Enum.TryParse(System.Type,System.String,System.Object);Specify the ignoreCase argument explicitly
+M:System.Enum.TryParse(System.Type,System.ReadOnlySpan{System.Char},System.Object);Specify the ignoreCase argument explicitly
+M:System.Enum.TryParse``1(System.String,``0@);Specify the ignoreCase argument explicitly
+M:System.Enum.TryParse``1(System.ReadOnlySpan{System.Char},``0@);Specify the ignoreCase argument explicitly
