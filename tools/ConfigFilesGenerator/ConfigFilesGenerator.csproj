@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Meziantou.Framework.FullPath" Version="1.0.11" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.5-beta1.23225.2">
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.5-beta1.23270.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -17,7 +17,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.6.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="4.6.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="4.6.0" />
-    <PackageReference Include="NuGet.Protocol" Version="6.6.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.6.1" />
   </ItemGroup>
 
 </Project>
