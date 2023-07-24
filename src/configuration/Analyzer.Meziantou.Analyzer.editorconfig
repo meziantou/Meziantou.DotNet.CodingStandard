@@ -79,7 +79,7 @@ dotnet_diagnostic.MA0014.severity = warning
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0015.severity = warning
 
-# MA0016: Prefer returning collection abstraction instead of implementation
+# MA0016: Prefer using collection abstraction instead of implementation
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0016.md
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0016.severity = none
@@ -89,9 +89,9 @@ dotnet_diagnostic.MA0016.severity = none
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0017.severity = warning
 
-# MA0018: Do not declare static members on generic types
+# MA0018: Do not declare static members on generic types (deprecated; use CA1000 instead)
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0018.md
-# Enabled: True, Severity: warning
+# Enabled: True, Severity: info
 # Superseeded by CA1000
 dotnet_diagnostic.MA0018.severity = none
 
