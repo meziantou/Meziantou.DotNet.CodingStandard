@@ -18,8 +18,10 @@ using System.Text.RegularExpressions;
 var rootFolder = GetRootFolderPath();
 
 var writtenFiles = 0;
-await foreach (var (packageId, packageVersion) in GetReferencedNuGetPackages())
+await Parallel.ForEachAsync(GetReferencedNuGetPackages(), async (item, cancellationToken) =>
 {
+    var (packageId, packageVersion) = item;
+
     Console.WriteLine(packageId + "@" + packageVersion);
     var configurationFilePath = rootFolder / "src" / "configuration" / ("Analyzer." + packageId + ".editorconfig");
 
@@ -91,12 +93,12 @@ await foreach (var (packageId, packageVersion) in GetReferencedNuGetPackages())
         if (File.Exists(configurationFilePath))
         {
             if (File.ReadAllText(configurationFilePath).ReplaceLineEndings() == sb.ToString().ReplaceLineEndings())
-                continue;
+                return;
         }
 
         configurationFilePath.CreateParentDirectory();
-        await File.WriteAllTextAsync(configurationFilePath, sb.ToString());
-        writtenFiles++;
+        await File.WriteAllTextAsync(configurationFilePath, sb.ToString(), cancellationToken);
+        Interlocked.Increment(ref writtenFiles);
 
         static string GetSeverity(DiagnosticSeverity? severity)
         {
@@ -108,7 +110,7 @@ await foreach (var (packageId, packageVersion) in GetReferencedNuGetPackages())
             };
         }
     }
-}
+});
 
 return writtenFiles;
 
