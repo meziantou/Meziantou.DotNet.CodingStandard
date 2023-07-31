@@ -671,3 +671,8 @@ dotnet_diagnostic.MA0133.severity = warning
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0134.severity = warning
 
+# MA0135: The log parameter has no configured type
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0135.md
+# Enabled: False, Severity: warning
+dotnet_diagnostic.MA0135.severity = none
+
