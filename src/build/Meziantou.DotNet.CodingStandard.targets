@@ -12,6 +12,7 @@
   <Target Name="Disable_SponsorLink" BeforeTargets="CoreCompile" Condition="$(Disable_SponsorLink) != 'false'">
     <ItemGroup>
       <Analyzer Remove="@(Analyzer)" Condition="'%(FileName)' == 'DevLooped.SponsorLink' " />
+      <Analyzer Remove="@(Analyzer)" Condition="'%(FileName)' == 'Moq.CodeAnalysis' " />
     </ItemGroup>
   </Target>
 
