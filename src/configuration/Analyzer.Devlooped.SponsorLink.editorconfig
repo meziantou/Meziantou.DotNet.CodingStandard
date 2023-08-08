@@ -1,0 +1,9 @@
+is_global = true
+global_level = 0
+
+dotnet_diagnostic.DSL001.severity = none
+dotnet_diagnostic.DSL002.severity = none
+
+dotnet_diagnostic.MOQ100.severity = none
+dotnet_diagnostic.MOQ101.severity = none
+dotnet_diagnostic.MOQ102.severity = none
