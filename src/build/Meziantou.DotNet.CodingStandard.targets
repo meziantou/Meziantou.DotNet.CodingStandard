@@ -1,12 +1,19 @@
 <Project>
-    <!-- Banned Symbols -->
-    <PropertyGroup>
-        <IncludeDefaultBannedSymbols Condition="$(IncludeDefaultBannedSymbols) == ''">true</IncludeDefaultBannedSymbols>
-    </PropertyGroup>
+  <!-- Banned Symbols -->
+  <PropertyGroup>
+    <IncludeDefaultBannedSymbols Condition="$(IncludeDefaultBannedSymbols) == ''">true</IncludeDefaultBannedSymbols>
+  </PropertyGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\configuration\BannedSymbols.txt" Condition="$(IncludeDefaultBannedSymbols) == 'true'" Visible="false" />
+  </ItemGroup>
+
+  <!-- Disable packages -->
+  <Target Name="Disable_SponsorLink" BeforeTargets="CoreCompile" Condition="$(Disable_SponsorLink) != 'false'">
     <ItemGroup>
-         <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\configuration\BannedSymbols.txt" Condition="$(IncludeDefaultBannedSymbols) == 'true'" Visible="false" />
+      <Analyzer Remove="@(Analyzer)" Condition="'%(FileName)' == 'DevLooped.SponsorLink' " />
     </ItemGroup>
+  </Target>
 
-    <Import Project="$(MSBuildThisFileDirectory)/ReproducibleBuilds.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)/ReproducibleBuilds.targets" />
 </Project>
