@@ -7,7 +7,14 @@ F:System.StringComparison.InvariantCultureIgnoreCase;Do you mean OrdinalIgnoreCa
 P:System.StringComparer.InvariantCulture;Do you mean Ordinal?
 P:System.StringComparer.InvariantCultureIgnoreCase;Do you mean OrdinalIgnoreCase?
 
-M:System.Enum.TryParse(System.Type,System.String,System.Object);Specify the ignoreCase argument explicitly
-M:System.Enum.TryParse(System.Type,System.ReadOnlySpan{System.Char},System.Object);Specify the ignoreCase argument explicitly
-M:System.Enum.TryParse``1(System.String,``0@);Specify the ignoreCase argument explicitly
-M:System.Enum.TryParse``1(System.ReadOnlySpan{System.Char},``0@);Specify the ignoreCase argument explicitly
+M:System.Enum.TryParse(System.Type,System.String,System.Object);Use an overload with a ignoreCase argument
+M:System.Enum.TryParse(System.Type,System.ReadOnlySpan{System.Char},System.Object);Use an overload with a ignoreCase argument
+M:System.Enum.TryParse``1(System.String,``0@);Use an overload with a ignoreCase argument
+M:System.Enum.TryParse``1(System.ReadOnlySpan{System.Char},``0@);Use an overload with a ignoreCase argument
+
+M:System.Math.Round(System.Decimal);Use an overload with a MidpointRounding argument
+M:System.Math.Round(System.Decimal,System.Int32);Use an overload with a MidpointRounding argument
+M:System.Math.Round(System.Double);Use an overload with a MidpointRounding argument
+M:System.Math.Round(System.Double,System.Int32);Use an overload with a MidpointRounding argument
+M:System.MathF.Round(System.Single);Use an overload with a MidpointRounding argument
+M:System.MathF.Round(System.Single,System.Int32);Use an overload with a MidpointRounding argument
