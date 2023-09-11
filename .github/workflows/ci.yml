@@ -24,7 +24,7 @@ jobs:
   lint_config:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
       - run: dotnet run --project=tools/ConfigFilesGenerator/ConfigFilesGenerator.csproj
@@ -32,7 +32,7 @@ jobs:
   create_nuget:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
       - run: |
@@ -63,7 +63,7 @@ jobs:
     runs-on: "ubuntu-22.04"
     needs: [create_nuget, lint_config]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
         with:
           name: nuget
