@@ -1,6 +1,10 @@
 P:System.DateTime.Now;Use System.DateTime.UtcNow instead
 P:System.DateTimeOffset.Now;Use System.DateTimeOffset.UtcNow instead
 
+P:System.IO.FileSystemInfo.CreationTime;Use CreationTimeUtc instead
+P:System.IO.FileSystemInfo.LastAccessTime;Use LastAccessTimeUtc instead
+P:System.IO.FileSystemInfo.LastWriteTime;Use LastWriteTimeUtc instead
+
 M:System.IO.File.GetCreationTime(System.String);Use GetCreationTimeUtc instead
 M:System.IO.File.GetCreationTime(Microsoft.Win32.SafeHandles.SafeFileHandle);Use GetCreationTimeUtc instead
 M:System.IO.File.GetLastAccessTime(System.String);Use GetLastAccessTimeUtc instead
