@@ -1,6 +1,25 @@
 P:System.DateTime.Now;Use System.DateTime.UtcNow instead
 P:System.DateTimeOffset.Now;Use System.DateTimeOffset.UtcNow instead
+
 M:System.IO.File.GetCreationTime(System.String);Use GetCreationTimeUtc instead
+M:System.IO.File.GetCreationTime(Microsoft.Win32.SafeHandles.SafeFileHandle);Use GetCreationTimeUtc instead
+M:System.IO.File.GetLastAccessTime(System.String);Use GetLastAccessTimeUtc instead
+M:System.IO.File.GetLastAccessTime(Microsoft.Win32.SafeHandles.SafeFileHandle);Use GetLastAccessTimeUtc instead
+M:System.IO.File.GetLastWriteTime(System.String);Use GetLastWriteTimeUtc instead
+M:System.IO.File.GetLastWriteTime(Microsoft.Win32.SafeHandles.SafeFileHandle);Use GetLastWriteTimeUtc instead
+M:System.IO.File.SetCreationTime(System.String,System.DateTime);Use SetCreationTimeUtc instead
+M:System.IO.File.SetCreationTime(Microsoft.Win32.SafeHandles.SafeFileHandle,System.DateTime);Use SetCreationTimeUtc instead
+M:System.IO.File.SetLastAccessTime(System.String,System.DateTime);Use SetLastAccessTimeUtc instead
+M:System.IO.File.SetLastAccessTime(Microsoft.Win32.SafeHandles.SafeFileHandle,System.DateTime);Use SetLastAccessTimeUtc instead
+M:System.IO.File.SetLastWriteTime(System.String,System.DateTime);Use SetLastWriteTimeUtc instead
+M:System.IO.File.SetLastWriteTime(Microsoft.Win32.SafeHandles.SafeFileHandle,System.DateTime);Use SetLastWriteTimeUtc instead
+
+M:System.IO.Directory.GetCreationTime(System.String);Use GetCreationTimeUtc instead
+M:System.IO.Directory.GetLastWriteTime(System.String);Use GetLastWriteTimeUtc instead
+M:System.IO.Directory.GetLastAccessTime(System.String);Use GetLastAccessTimeUtc instead
+M:System.IO.Directory.SetCreationTime(System.String,System.DateTime);Use SetCreationTimeUtc instead
+M:System.IO.Directory.SetLastAccessTime(System.String,System.DateTime);Use SetLastAccessTimeUtc instead
+M:System.IO.Directory.SetLastWriteTime(System.String,System.DateTime);Use SetLastWriteTimeUtc instead
 
 F:System.StringComparison.InvariantCulture;Do you mean Ordinal?
 F:System.StringComparison.InvariantCultureIgnoreCase;Do you mean OrdinalIgnoreCase?
