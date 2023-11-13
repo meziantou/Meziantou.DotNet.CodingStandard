@@ -691,3 +691,23 @@ dotnet_diagnostic.MA0137.severity = none
 # Enabled: False, Severity: warning
 dotnet_diagnostic.MA0138.severity = none
 
+# MA0139: Log Parameter type is not valid
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0139.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0139.severity = warning
+
+# MA0140: Both if and else branch have identical code
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0140.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0140.severity = warning
+
+# MA0141: Use pattern matching instead of inequality operators
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0141.md
+# Enabled: False, Severity: info
+dotnet_diagnostic.MA0141.severity = suggestion
+
+# MA0142: Use pattern matching instead of equality operators
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0142.md
+# Enabled: False, Severity: info
+dotnet_diagnostic.MA0142.severity = suggestion
+
