@@ -519,7 +519,7 @@ dotnet_diagnostic.MA0103.severity = warning
 # MA0104: Do not create a type with a name from the BCL
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0104.md
 # Enabled: False, Severity: warning
-dotnet_diagnostic.MA0104.severity = suggestion
+dotnet_diagnostic.MA0104.severity = none
 
 # MA0105: Use the lambda parameters instead of using a closure
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0105.md
