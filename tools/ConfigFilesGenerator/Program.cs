@@ -106,7 +106,10 @@ await Parallel.ForEachAsync(GetReferencedNuGetPackages(), async (item, cancellat
             {
                 null => "none",
                 DiagnosticSeverity.Hidden => "silent",
-                _ => severity.ToString()!.ToLowerInvariant(),
+                DiagnosticSeverity.Info => "suggestion",
+                DiagnosticSeverity.Warning => "warning",
+                DiagnosticSeverity.Error => "error",
+                _ => throw new Exception($"Severity '{severity}' is not supported"),
             };
         }
     }
@@ -133,7 +136,7 @@ async IAsyncEnumerable<(string Id, string Version)> GetReferencedNuGetPackages()
     {
         var versions = await resource.GetAllVersionsAsync(package, cache, NullLogger.Instance, CancellationToken.None);
 
-        yield return (package, versions.FindBestMatch(VersionRange.Parse("*-*"), version => version).ToString());
+        yield return (package, versions.FindBestMatch(VersionRange.Parse("*-*"), version => version)!.ToString());
     }
 }
 
@@ -252,6 +255,10 @@ static (AnalyzerConfiguration[] Rules, string[] Unknowns) GetConfiguration(FullP
                     if (severityValue == "silent")
                     {
                         diagnosticSeverity = DiagnosticSeverity.Hidden;
+                    }
+                    else if (severityValue == "suggestion")
+                    {
+                        diagnosticSeverity = DiagnosticSeverity.Info;
                     }
                     else if (Enum.TryParse<DiagnosticSeverity>(severityValue, ignoreCase: true, out var severity))
                     {
