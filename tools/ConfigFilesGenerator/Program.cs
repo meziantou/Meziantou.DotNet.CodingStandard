@@ -132,11 +132,14 @@ async IAsyncEnumerable<(string Id, string Version)> GetReferencedNuGetPackages()
     var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
 
     var resource = await repository.GetResourceAsync<FindPackageByIdResource>();
+    PackageMetadataResource resource2 = await repository.GetResourceAsync<PackageMetadataResource>();
+
     foreach (var package in new[] { "Microsoft.CodeAnalysis.NetAnalyzers", /*"Microsoft.CodeAnalysis.CSharp.CodeStyle"*/ })
     {
-        var versions = await resource.GetAllVersionsAsync(package, cache, NullLogger.Instance, CancellationToken.None);
+        var metadata = await resource2.GetMetadataAsync(package, includePrerelease: true, includeUnlisted: false, cache, NullLogger.Instance, CancellationToken.None);
+        var max = metadata.MaxBy(metadata => metadata.Identity.Version)!;
 
-        yield return (package, versions.FindBestMatch(VersionRange.Parse("*-*"), version => version)!.ToString());
+        yield return (package, max.Identity.Version.ToString());
     }
 }
 

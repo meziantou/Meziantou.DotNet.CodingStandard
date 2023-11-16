@@ -712,6 +712,56 @@ dotnet_diagnostic.CA1859.severity = warning
 # Enabled: True, Severity: suggestion
 dotnet_diagnostic.CA1860.severity = warning
 
+# CA1861: Avoid constant arrays as arguments
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1861
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1861.severity = suggestion
+
+# CA1862: Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1862
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1862.severity = suggestion
+
+# CA1863: Use 'CompositeFormat'
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1863
+# Enabled: True, Severity: silent
+dotnet_diagnostic.CA1863.severity = silent
+
+# CA1864: Prefer the 'IDictionary.TryAdd(TKey, TValue)' method
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1864
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1864.severity = suggestion
+
+# CA1865: Use char overload
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1865
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1865.severity = suggestion
+
+# CA1866: Use char overload
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1866
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1866.severity = suggestion
+
+# CA1867: Use char overload
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1867
+# Enabled: False, Severity: warning
+dotnet_diagnostic.CA1867.severity = none
+
+# CA1868: Unnecessary call to 'Contains(item)'
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1868
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1868.severity = suggestion
+
+# CA1869: Cache and reuse 'JsonSerializerOptions' instances
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1869
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1869.severity = suggestion
+
+# CA1870: Use a cached 'SearchValues' instance
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1870
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1870.severity = suggestion
+
 # CA2000: Dispose objects before losing scope
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2000
 # Enabled: False, Severity: warning
@@ -893,11 +943,6 @@ dotnet_diagnostic.CA2226.severity = warning
 # Enabled: False, Severity: warning
 dotnet_diagnostic.CA2227.severity = none
 
-# CA2229: Implement serialization constructors
-# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2229
-# Enabled: True, Severity: silent
-dotnet_diagnostic.CA2229.severity = warning
-
 # CA2231: Overload operator equals on overriding value type Equals
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2231
 # Enabled: True, Severity: suggestion
@@ -1017,6 +1062,11 @@ dotnet_diagnostic.CA2259.severity = warning
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2260
 # Enabled: True, Severity: warning
 dotnet_diagnostic.CA2260.severity = warning
+
+# CA2261: Do not use ConfigureAwaitOptions.SuppressThrowing with Task<TResult>
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2261
+# Enabled: True, Severity: warning
+dotnet_diagnostic.CA2261.severity = warning
 
 # CA2300: Do not use insecure deserializer BinaryFormatter
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2300
