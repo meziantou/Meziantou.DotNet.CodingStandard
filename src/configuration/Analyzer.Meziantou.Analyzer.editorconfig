@@ -711,3 +711,8 @@ dotnet_diagnostic.MA0141.severity = suggestion
 # Enabled: False, Severity: suggestion
 dotnet_diagnostic.MA0142.severity = suggestion
 
+# MA0143: Primary constructor parameters should be readonly
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0143.md
+# Enabled: False, Severity: warning
+dotnet_diagnostic.MA0143.severity = warning
+

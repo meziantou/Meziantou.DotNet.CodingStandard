@@ -130,13 +130,11 @@ async IAsyncEnumerable<(string Id, string Version)> GetReferencedNuGetPackages()
     // Add Net analyzers
     var cache = new SourceCacheContext();
     var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
-
-    var resource = await repository.GetResourceAsync<FindPackageByIdResource>();
-    PackageMetadataResource resource2 = await repository.GetResourceAsync<PackageMetadataResource>();
+    var resource = await repository.GetResourceAsync<PackageMetadataResource>();
 
     foreach (var package in new[] { "Microsoft.CodeAnalysis.NetAnalyzers", /*"Microsoft.CodeAnalysis.CSharp.CodeStyle"*/ })
     {
-        var metadata = await resource2.GetMetadataAsync(package, includePrerelease: true, includeUnlisted: false, cache, NullLogger.Instance, CancellationToken.None);
+        var metadata = await resource.GetMetadataAsync(package, includePrerelease: true, includeUnlisted: false, cache, NullLogger.Instance, CancellationToken.None);
         var max = metadata.MaxBy(metadata => metadata.Identity.Version)!;
 
         yield return (package, max.Identity.Version.ToString());
@@ -173,42 +171,49 @@ static async Task<Assembly[]> GetAnalyzerReferences(string packageId, string ver
     var repository = Repository.Factory.GetCoreV3(source);
     var resource = await repository.GetResourceAsync<FindPackageByIdResource>();
 
-    // Download the package
-    using var packageStream = new MemoryStream();
-    await resource.CopyNupkgToStreamAsync(
-        packageId,
-        new NuGetVersion(version),
-        packageStream,
-        cache,
-        logger,
-        cancellationToken);
+    var package = GlobalPackagesFolderUtility.GetPackage(new PackageIdentity(packageId, new NuGetVersion(version)), globalPackagesFolder);
+    if (package is null || package.Status is DownloadResourceResultStatus.NotFound)
+    {
+        // Download the package
+        using var packageStream = new MemoryStream();
+        await resource.CopyNupkgToStreamAsync(
+            packageId,
+            new NuGetVersion(version),
+            packageStream,
+            cache,
+            logger,
+            cancellationToken);
 
-    packageStream.Seek(0, SeekOrigin.Begin);
+        packageStream.Seek(0, SeekOrigin.Begin);
 
-    // Add it to the global package folder
-    var downloadResult = await GlobalPackagesFolderUtility.AddPackageAsync(
-        source,
-        new PackageIdentity(packageId, new NuGetVersion(version)),
-        packageStream,
-        globalPackagesFolder,
-        parentId: Guid.Empty,
-        ClientPolicyContext.GetClientPolicy(settings, logger),
-        logger,
-        cancellationToken);
+        // Add it to the global package folder
+        package = await GlobalPackagesFolderUtility.AddPackageAsync(
+            source,
+            new PackageIdentity(packageId, new NuGetVersion(version)),
+            packageStream,
+            globalPackagesFolder,
+            parentId: Guid.Empty,
+            ClientPolicyContext.GetClientPolicy(settings, logger),
+            logger,
+            cancellationToken);
+    }
 
     var result = new List<Assembly>();
-    foreach (var file in downloadResult.PackageReader.GetFiles("analyzers"))
+    var groups = package.PackageReader.GetFiles("analyzers").GroupBy(Path.GetDirectoryName).ToArray();
+    foreach (var group in groups)
     {
-        if (Path.GetFileName(file) == "System.EnterpriseServices.Wrapper.dll")
-            continue;
-
-        try
+        var context = new AssemblyLoadContext(null);
+        foreach (var file in group)
         {
-            using var stream = downloadResult.PackageReader.GetStream(file);
-            result.Add(AssemblyLoadContext.Default.LoadFromStream(stream));
-        }
-        catch
-        {
+            try
+            {
+                using var stream = package.PackageReader.GetStream(file);
+                result.Add(context.LoadFromStream(stream));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 

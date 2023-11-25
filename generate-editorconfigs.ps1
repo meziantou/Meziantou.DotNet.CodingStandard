@@ -1,0 +1,1 @@
+dotnet run --project $PSScriptRoot/tools/ConfigFilesGenerator/ConfigFilesGenerator.csproj
