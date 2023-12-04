@@ -716,3 +716,18 @@ dotnet_diagnostic.MA0142.severity = suggestion
 # Enabled: False, Severity: warning
 dotnet_diagnostic.MA0143.severity = warning
 
+# MA0144: Use System.OperatingSystem to check the current OS
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0144.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0144.severity = warning
+
+# MA0145: Signature for [UnsafeAccessorAttribute] method is not valid
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0145.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0145.severity = warning
+
+# MA0146: Name must be set explicitly on local functions
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0146.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0146.severity = warning
+
