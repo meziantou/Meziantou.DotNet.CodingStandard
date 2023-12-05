@@ -731,3 +731,8 @@ dotnet_diagnostic.MA0145.severity = warning
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0146.severity = warning
 
+# MA0147: Avoid async void method for delegate
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0147.md
+# Enabled: False, Severity: warning
+dotnet_diagnostic.MA0147.severity = warning
+
