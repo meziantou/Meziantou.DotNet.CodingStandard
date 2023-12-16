@@ -701,12 +701,12 @@ dotnet_diagnostic.MA0139.severity = warning
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0140.severity = warning
 
-# MA0141: Use pattern matching instead of inequality operators
+# MA0141: Use pattern matching instead of inequality operators for null check
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0141.md
 # Enabled: False, Severity: suggestion
 dotnet_diagnostic.MA0141.severity = suggestion
 
-# MA0142: Use pattern matching instead of equality operators
+# MA0142: Use pattern matching instead of equality operators for null check
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0142.md
 # Enabled: False, Severity: suggestion
 dotnet_diagnostic.MA0142.severity = suggestion
@@ -735,4 +735,14 @@ dotnet_diagnostic.MA0146.severity = warning
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0147.md
 # Enabled: False, Severity: warning
 dotnet_diagnostic.MA0147.severity = warning
+
+# MA0148: Use pattern matching instead of equality operators for discrete value
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0148.md
+# Enabled: False, Severity: suggestion
+dotnet_diagnostic.MA0148.severity = suggestion
+
+# MA0149: Use pattern matching instead of inequality operators for discrete value
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0149.md
+# Enabled: False, Severity: suggestion
+dotnet_diagnostic.MA0149.severity = suggestion
 
