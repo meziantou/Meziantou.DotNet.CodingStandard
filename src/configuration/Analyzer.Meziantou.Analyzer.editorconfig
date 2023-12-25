@@ -751,3 +751,8 @@ dotnet_diagnostic.MA0149.severity = suggestion
 # Enabled: False, Severity: warning
 dotnet_diagnostic.MA0150.severity = warning
 
+# MA0151: DebuggerDisplay must contain valid members
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0151.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0151.severity = warning
+
