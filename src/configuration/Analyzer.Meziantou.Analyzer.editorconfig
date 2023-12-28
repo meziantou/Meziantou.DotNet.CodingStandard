@@ -713,7 +713,7 @@ dotnet_diagnostic.MA0142.severity = suggestion
 
 # MA0143: Primary constructor parameters should be readonly
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0143.md
-# Enabled: False, Severity: warning
+# Enabled: True, Severity: warning
 dotnet_diagnostic.MA0143.severity = warning
 
 # MA0144: Use System.OperatingSystem to check the current OS
@@ -733,7 +733,7 @@ dotnet_diagnostic.MA0146.severity = warning
 
 # MA0147: Avoid async void method for delegate
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0147.md
-# Enabled: False, Severity: warning
+# Enabled: True, Severity: warning
 dotnet_diagnostic.MA0147.severity = warning
 
 # MA0148: Use pattern matching instead of equality operators for discrete value
@@ -748,7 +748,7 @@ dotnet_diagnostic.MA0149.severity = suggestion
 
 # MA0150: Do not call the default object.ToString explicitly
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0150.md
-# Enabled: False, Severity: warning
+# Enabled: True, Severity: warning
 dotnet_diagnostic.MA0150.severity = warning
 
 # MA0151: DebuggerDisplay must contain valid members
