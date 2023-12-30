@@ -756,3 +756,13 @@ dotnet_diagnostic.MA0150.severity = warning
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0151.severity = warning
 
+# MA0152: Use Unwrap instead of using await twice
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0152.md
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.MA0152.severity = suggestion
+
+# MA0153: Do not log symbols decorated with DataClassificationAttribute directly
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0153.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0153.severity = warning
+
