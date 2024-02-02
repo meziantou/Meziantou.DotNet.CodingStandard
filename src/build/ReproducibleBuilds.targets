@@ -21,4 +21,10 @@
             BeforeTargets="ResolveAssemblyReferences;Build;Rebuild" >
       <Warning Text = "Reproducible builds require MSBuild '$(_ReproducibleBuildsMSBuildMinVersion)' or later. This project is using '$(MSBuildVersion)'. Use .NET SDK 5.0.300 or VS 16.10 or later." />
     </Target>
+  
+    <Target Name="_SourceLinkFound"
+            Condition="'$(MicrosoftBuildTasksGitAssemblyFile)' == ''"
+            BeforeTargets="ResolveAssemblyReferences;Build;Rebuild" >
+      <Warning Text = "SourceLink is not enabled. Use .NET SDK 8.0.100 or later." />
+    </Target>
   </Project>

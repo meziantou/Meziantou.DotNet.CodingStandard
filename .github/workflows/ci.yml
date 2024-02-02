@@ -82,10 +82,11 @@ jobs:
               }
               else
               {
-                Write-Host "Not on the default branch => Do not push"
+                & dotnet nuget push "$($file.FullName)" --api-key "$env:FeedzApiKey" --source https://f.feedz.io/meziantou/meziantou-dotnet-codingstandard/nuget/index.json --force-english-output --skip-duplicate
               }
           }
         name: Publish NuGet packages
         if: always()
         env:
           NuGetApiKey: ${{ secrets.NuGetApiKey }}
+          FeedzApiKey: ${{ secrets.FEEDZ_APIKEY }}

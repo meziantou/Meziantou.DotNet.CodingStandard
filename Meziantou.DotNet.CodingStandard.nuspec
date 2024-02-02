@@ -13,11 +13,6 @@
     
     <repository type="git" url="$RepositoryUrl$" commit="$RepositoryCommit$" branch="$RepositoryBranch$" />
     <dependencies>
-      <dependency id="Microsoft.SourceLink.AzureRepos.Git" version="8.0.0" />
-      <dependency id="Microsoft.SourceLink.Bitbucket.Git" version="8.0.0" />
-      <dependency id="Microsoft.SourceLink.GitHub" version="8.0.0" />
-      <dependency id="Microsoft.SourceLink.GitLab" version="8.0.0" />
-
       <dependency id="Meziantou.Analyzer" version="2.0.136" />
       <dependency id="Microsoft.CodeAnalysis.BannedApiAnalyzers" version="3.3.4" />
     </dependencies>
