@@ -385,6 +385,16 @@ dotnet_diagnostic.CA1512.severity = warning
 # Enabled: True, Severity: suggestion
 dotnet_diagnostic.CA1513.severity = warning
 
+# CA1514: Avoid redundant length argument
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1514
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1514.severity = suggestion
+
+# CA1515: Consider making public types internal
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1515
+# Enabled: False, Severity: warning
+dotnet_diagnostic.CA1515.severity = none
+
 # CA1700: Do not name enum values 'Reserved'
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1700
 # Enabled: False, Severity: warning
@@ -1068,6 +1078,11 @@ dotnet_diagnostic.CA2260.severity = warning
 # Enabled: True, Severity: warning
 dotnet_diagnostic.CA2261.severity = warning
 
+# CA2262: Set 'MaxResponseHeadersLength' properly
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2262
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA2262.severity = warning
+
 # CA2300: Do not use insecure deserializer BinaryFormatter
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2300
 # Enabled: False, Severity: warning
@@ -1503,7 +1518,7 @@ dotnet_diagnostic.CA5400.severity = warning
 # Enabled: False, Severity: warning
 dotnet_diagnostic.CA5401.severity = warning
 
-# CA5402: Use CreateEncryptor with the default IV 
+# CA5402: Use CreateEncryptor with the default IV
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca5402
 # Enabled: False, Severity: warning
 dotnet_diagnostic.CA5402.severity = warning
