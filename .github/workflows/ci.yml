@@ -25,7 +25,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET Core
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
       - run: dotnet run --project=tools/ConfigFilesGenerator/ConfigFilesGenerator.csproj
 
@@ -33,7 +33,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET Core
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
       - run: |
           try
@@ -58,10 +58,18 @@ jobs:
           if-no-files-found: error
           retention-days: 3
           path: "**/*.nupkg"
+          
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+      - run: dotnet test tests/Meziantou.DotNet.CodingStandard.Tests/Meziantou.DotNet.CodingStandard.Tests.csproj
 
   deploy:
     runs-on: "ubuntu-22.04"
-    needs: [create_nuget, lint_config]
+    needs: [create_nuget, lint_config, test]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
