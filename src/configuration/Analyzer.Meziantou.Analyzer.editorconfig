@@ -616,7 +616,7 @@ dotnet_diagnostic.MA0122.severity = warning
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0123.severity = warning
 
-# MA0124: Log Parameter type is not valid
+# MA0124: Log parameter type is not valid
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0124.md
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0124.severity = warning
@@ -691,7 +691,7 @@ dotnet_diagnostic.MA0137.severity = none
 # Enabled: False, Severity: warning
 dotnet_diagnostic.MA0138.severity = none
 
-# MA0139: Log Parameter type is not valid
+# MA0139: Log parameter type is not valid
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0139.md
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0139.severity = warning
@@ -765,4 +765,9 @@ dotnet_diagnostic.MA0152.severity = suggestion
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0153.md
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0153.severity = warning
+
+# MA0154: Use langword in XML comment
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0154.md
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.MA0154.severity = suggestion
 
