@@ -28,7 +28,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
         var data = await project.BuildAndGetOutput(["/p:GITHUB_ACTIONS=true"]);
         Assert.True(data.HasError("RS0030"));
     }
-    
+
     [Fact]
     public async Task NamingConvention_Invalid()
     {
@@ -49,7 +49,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
         var data = await project.BuildAndGetOutput(["--configuration", "Release"]);
         Assert.True(data.HasError("IDE1006"));
     }
-    
+
     [Fact]
     public async Task NamingConvention_Valid()
     {
@@ -66,6 +66,29 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
         var data = await project.BuildAndGetOutput(["--configuration", "Release"]);
         Assert.False(data.HasError("IDE1006"));
         Assert.False(data.HasWarning("IDE1006"));
+    }
+
+    [Fact]
+    public async Task NuGetAuditIsReportedAsErrorOnGitHubActions()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        project.AddCsprojFile(nuGetPackages: [("System.Net.Http", "4.3.3")]);
+        project.AddFile("Program.cs", """System.Console.WriteLine();""");
+        var data = await project.BuildAndGetOutput(["/p:GITHUB_ACTIONS=true"]);
+        Assert.True(data.OutputContains("error NU1903", StringComparison.Ordinal));
+        Assert.Equal(1, data.ExitCode);
+    }
+
+    [Fact]
+    public async Task NuGetAuditIsReportedAsWarning()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        project.AddCsprojFile(nuGetPackages: [("System.Net.Http", "4.3.3")]);
+        project.AddFile("Program.cs", """System.Console.WriteLine();""");
+        var data = await project.BuildAndGetOutput();
+        Assert.True(data.OutputContains("warning NU1903", StringComparison.Ordinal));
+        Assert.True(data.OutputDoesNotContain("error NU1903", StringComparison.Ordinal));
+        Assert.Equal(0, data.ExitCode);
     }
 
     private sealed class ProjectBuilder : IAsyncDisposable
@@ -110,14 +133,23 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
             return this;
         }
 
-        public ProjectBuilder AddCsprojFile(Dictionary<string, string> properties = null)
+        public ProjectBuilder AddCsprojFile((string Name, string Value)[] properties = null, (string Name, string Version)[] nuGetPackages = null)
         {
-            var element = new XElement("PropertyGroup");
+            var propertiesElement = new XElement("PropertyGroup");
             if (properties != null)
             {
                 foreach (var prop in properties)
                 {
-                    element.Add(new XElement(prop.Key), prop.Value);
+                    propertiesElement.Add(new XElement(prop.Name), prop.Value);
+                }
+            }
+
+            var packagesElement = new XElement("ItemGroup");
+            if (nuGetPackages != null)
+            {
+                foreach (var package in nuGetPackages)
+                {
+                    packagesElement.Add(new XElement("PackageReference", new XAttribute("Include", package.Name), new XAttribute("Version", package.Version)));
                 }
             }
 
@@ -130,7 +162,8 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
                     <Nullable>enable</Nullable>
                     <ErrorLog>{SarifFileName},version=2.1</ErrorLog>
                   </PropertyGroup>
-                  {element}
+                  {propertiesElement}
+                  {packagesElement}
 
                   <ItemGroup>
                     <PackageReference Include="Meziantou.DotNet.CodingStandard" Version="999.9.9" />
@@ -142,7 +175,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
             return this;
         }
 
-        public async Task<SarifFile> BuildAndGetOutput(string[] buildArguments = null)
+        public async Task<BuildResult> BuildAndGetOutput(string[] buildArguments = null)
         {
             var psi = new ProcessStartInfo("dotnet")
             {
@@ -168,14 +201,24 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
             _testOutputHelper.WriteLine("Process exit code: " + result.ExitCode);
             _testOutputHelper.WriteLine(result.Output.ToString());
 
-
             var bytes = File.ReadAllBytes(_directory.FullPath / SarifFileName);
             var sarif = JsonSerializer.Deserialize<SarifFile>(bytes);
             _testOutputHelper.WriteLine("Sarif result:\n" + string.Join("\n", sarif.AllResults().Select(r => r.ToString())));
-            return sarif;
+            return new BuildResult(result.ExitCode, result.Output, sarif);
         }
 
         public ValueTask DisposeAsync() => _directory.DisposeAsync();
+    }
+
+    private sealed record BuildResult(int ExitCode, ProcessOutputCollection ProcessOutput, SarifFile SarifFile)
+    {
+        public bool OutputContains(string value, StringComparison stringComparison) => ProcessOutput.Any(line => line.Text.Contains(value, stringComparison));
+        public bool OutputDoesNotContain(string value, StringComparison stringComparison) => !ProcessOutput.Any(line => line.Text.Contains(value, stringComparison));
+
+        public bool HasError() => SarifFile.AllResults().Any(r => r.Level == "error");
+        public bool HasError(string ruleId) => SarifFile.AllResults().Any(r => r.Level == "error" && r.RuleId == ruleId);
+        public bool HasWarning(string ruleId) => SarifFile.AllResults().Any(r => r.Level == "warning" && r.RuleId == ruleId);
+        public bool HasNote(string ruleId) => SarifFile.AllResults().Any(r => r.Level == "note" && r.RuleId == ruleId);
     }
 
     private sealed class SarifFile
@@ -184,11 +227,6 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
         public SarifFileRun[] Runs { get; set; }
 
         public IEnumerable<SarifFileRunResult> AllResults() => Runs.SelectMany(r => r.Results);
-
-        public bool HasError() => AllResults().Any(r => r.Level == "error");
-        public bool HasError(string ruleId) => AllResults().Any(r => r.Level == "error" && r.RuleId == ruleId);
-        public bool HasWarning(string ruleId) => AllResults().Any(r => r.Level == "warning" && r.RuleId == ruleId);
-        public bool HasNote(string ruleId) => AllResults().Any(r => r.Level == "note" && r.RuleId == ruleId);
     }
 
     private sealed class SarifFileRun
