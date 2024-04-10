@@ -1084,6 +1084,11 @@ dotnet_diagnostic.CA2261.severity = warning
 # Enabled: True, Severity: suggestion
 dotnet_diagnostic.CA2262.severity = warning
 
+# CA2263: Prefer generic overload when type is known
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2263
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA2263.severity = suggestion
+
 # CA2300: Do not use insecure deserializer BinaryFormatter
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2300
 # Enabled: False, Severity: warning
