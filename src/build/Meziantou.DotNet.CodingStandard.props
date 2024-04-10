@@ -16,6 +16,11 @@
     </PropertyGroup>
 
     <PropertyGroup>
+        <NuGetAuditMode Condition="'$(NuGetAuditMode)' == ''">all</NuGetAuditMode>
+        <NuGetAuditLevel Condition="'$(NuGetAuditLevel)' == ''">low</NuGetAuditLevel>
+    </PropertyGroup>
+
+    <PropertyGroup>
         <AccelerateBuildsInVisualStudio Condition="'$(AccelerateBuildsInVisualStudio)' == ''">true</AccelerateBuildsInVisualStudio>
     </PropertyGroup>
     
