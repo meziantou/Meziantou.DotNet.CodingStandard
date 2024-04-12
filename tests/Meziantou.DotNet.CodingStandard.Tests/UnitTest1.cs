@@ -91,6 +91,32 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
         Assert.Equal(0, data.ExitCode);
     }
 
+    [Fact]
+    public async Task CA1708_NotReportedForFileLocalTypes()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        project.AddCsprojFile();
+        project.AddFile("Sample1.cs", """
+            System.Console.WriteLine()l
+
+            class A {}
+            
+            file class Sample
+            {
+            }
+            """);
+        project.AddFile("Sample2.cs", """
+            class B {}
+
+            file class Sample
+            {
+            }
+            """);
+        var data = await project.BuildAndGetOutput(["--configuration", "Release"]);
+        Assert.False(data.HasError("CA1708"));
+        Assert.False(data.HasWarning("CA1708"));
+    }
+
     private sealed class ProjectBuilder : IAsyncDisposable
     {
         private const string SarifFileName = "BuildOutput.sarif";
@@ -217,6 +243,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
 
         public bool HasError() => SarifFile.AllResults().Any(r => r.Level == "error");
         public bool HasError(string ruleId) => SarifFile.AllResults().Any(r => r.Level == "error" && r.RuleId == ruleId);
+        public bool HasWarning() => SarifFile.AllResults().Any(r => r.Level == "warning");
         public bool HasWarning(string ruleId) => SarifFile.AllResults().Any(r => r.Level == "warning" && r.RuleId == ruleId);
         public bool HasNote(string ruleId) => SarifFile.AllResults().Any(r => r.Level == "note" && r.RuleId == ruleId);
     }
