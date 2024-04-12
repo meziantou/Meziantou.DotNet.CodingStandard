@@ -772,6 +772,11 @@ dotnet_diagnostic.CA1869.severity = suggestion
 # Enabled: True, Severity: suggestion
 dotnet_diagnostic.CA1870.severity = suggestion
 
+# CA1871: Do not pass a nullable struct to 'ArgumentNullException.ThrowIfNull'
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1871
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1871.severity = suggestion
+
 # CA2000: Dispose objects before losing scope
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2000
 # Enabled: False, Severity: warning
@@ -1087,6 +1092,16 @@ dotnet_diagnostic.CA2262.severity = warning
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2263
 # Enabled: True, Severity: suggestion
 dotnet_diagnostic.CA2263.severity = suggestion
+
+# CA2264: Do not pass a non-nullable value to 'ArgumentNullException.ThrowIfNull'
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2264
+# Enabled: True, Severity: warning
+dotnet_diagnostic.CA2264.severity = warning
+
+# CA2265: Do not compare Span<T> to 'null' or 'default'
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2265
+# Enabled: True, Severity: warning
+dotnet_diagnostic.CA2265.severity = warning
 
 # CA2300: Do not use insecure deserializer BinaryFormatter
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2300
