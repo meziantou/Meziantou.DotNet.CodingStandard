@@ -11,12 +11,12 @@
         <AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)' == ''">true</AllowUnsafeBlocks>
         <LangVersion Condition="'$(LangVersion)' == ''">latest</LangVersion>
         
-        <MSBuildTreatWarningsAsErrors Condition="$(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release'">true</MSBuildTreatWarningsAsErrors>
-        <TreatWarningsAsErrors Condition="$(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
-        <EnforceCodeStyleInBuild Condition="$(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release'">true</EnforceCodeStyleInBuild>
+        <MSBuildTreatWarningsAsErrors Condition="'$(MSBuildTreatWarningsAsErrors)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</MSBuildTreatWarningsAsErrors>
+        <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</TreatWarningsAsErrors>
+        <EnforceCodeStyleInBuild Condition="'$(EnforceCodeStyleInBuild)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</EnforceCodeStyleInBuild>
     </PropertyGroup>
 
-    <PropertyGroup>
+    <PropertyGroup Label="NuGet Audit">
         <NuGetAudit Condition="'$(NuGetAudit)' == ''">true</NuGetAudit>
         <NuGetAuditMode Condition="'$(NuGetAuditMode)' == ''">all</NuGetAuditMode>
         <NuGetAuditLevel Condition="'$(NuGetAuditLevel)' == ''">low</NuGetAuditLevel>
