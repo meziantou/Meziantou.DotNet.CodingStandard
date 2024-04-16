@@ -11,6 +11,7 @@
         <AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)' == ''">true</AllowUnsafeBlocks>
         <LangVersion Condition="'$(LangVersion)' == ''">latest</LangVersion>
         
+        <MSBuildTreatWarningsAsErrors Condition="$(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release'">true</MSBuildTreatWarningsAsErrors>
         <TreatWarningsAsErrors Condition="$(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
         <EnforceCodeStyleInBuild Condition="$(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release'">true</EnforceCodeStyleInBuild>
     </PropertyGroup>

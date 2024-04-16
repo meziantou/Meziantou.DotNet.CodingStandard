@@ -92,6 +92,32 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
     }
 
     [Fact]
+    public async Task MSBuildWarningsAsError()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        project.AddFile("Program.cs", """System.Console.WriteLine();""");
+        project.AddCsprojFile(additionalProjectElements: [
+            new XElement("Target", new XAttribute("Name", "Custom"), new XAttribute("BeforeTargets", "Build"),
+                new XElement("Warning", new XAttribute("Text", "CustomWarning")))]);
+        var data = await project.BuildAndGetOutput(["--configuration", "Release"]);
+
+        Assert.True(data.OutputContains("error : CustomWarning"));
+    }
+
+    [Fact]
+    public async Task MSBuildWarningsAsError_NotEnableOnDebug()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        project.AddFile("Program.cs", """System.Console.WriteLine();""");
+        project.AddCsprojFile(additionalProjectElements: [
+            new XElement("Target", new XAttribute("Name", "Custom"), new XAttribute("BeforeTargets", "Build"),
+                new XElement("Warning", new XAttribute("Text", "CustomWarning")))]);
+        var data = await project.BuildAndGetOutput(["--configuration", "Debug"]);
+
+        Assert.True(data.OutputContains("warning : CustomWarning"));
+    }
+
+    [Fact]
     public async Task CA1708_NotReportedForFileLocalTypes()
     {
         await using var project = new ProjectBuilder(fixture, testOutputHelper);
@@ -108,7 +134,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
         project.AddFile("Sample2.cs", """
             class B {}
 
-            file class Sample
+            file class sample
             {
             }
             """);
@@ -159,7 +185,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
             return this;
         }
 
-        public ProjectBuilder AddCsprojFile((string Name, string Value)[] properties = null, (string Name, string Version)[] nuGetPackages = null)
+        public ProjectBuilder AddCsprojFile((string Name, string Value)[] properties = null, (string Name, string Version)[] nuGetPackages = null, XElement[] additionalProjectElements = null)
         {
             var propertiesElement = new XElement("PropertyGroup");
             if (properties != null)
@@ -190,10 +216,10 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
                   </PropertyGroup>
                   {propertiesElement}
                   {packagesElement}
-
                   <ItemGroup>
                     <PackageReference Include="Meziantou.DotNet.CodingStandard" Version="999.9.9" />
                   </ItemGroup>
+                  {string.Join('\n', additionalProjectElements?.Select(e => e.ToString()) ?? [])}
                 </Project>                
                 """;
 
@@ -238,8 +264,8 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
 
     private sealed record BuildResult(int ExitCode, ProcessOutputCollection ProcessOutput, SarifFile SarifFile)
     {
-        public bool OutputContains(string value, StringComparison stringComparison) => ProcessOutput.Any(line => line.Text.Contains(value, stringComparison));
-        public bool OutputDoesNotContain(string value, StringComparison stringComparison) => !ProcessOutput.Any(line => line.Text.Contains(value, stringComparison));
+        public bool OutputContains(string value, StringComparison stringComparison = StringComparison.Ordinal) => ProcessOutput.Any(line => line.Text.Contains(value, stringComparison));
+        public bool OutputDoesNotContain(string value, StringComparison stringComparison = StringComparison.Ordinal) => !ProcessOutput.Any(line => line.Text.Contains(value, stringComparison));
 
         public bool HasError() => SarifFile.AllResults().Any(r => r.Level == "error");
         public bool HasError(string ruleId) => SarifFile.AllResults().Any(r => r.Level == "error" && r.RuleId == ruleId);
