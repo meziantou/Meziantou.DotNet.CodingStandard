@@ -777,6 +777,11 @@ dotnet_diagnostic.CA1870.severity = suggestion
 # Enabled: True, Severity: suggestion
 dotnet_diagnostic.CA1871.severity = suggestion
 
+# CA1872: Prefer 'Convert.ToHexString' and 'Convert.ToHexStringLower' over call chains based on 'BitConverter.ToString'
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1872
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1872.severity = suggestion
+
 # CA2000: Dispose objects before losing scope
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2000
 # Enabled: False, Severity: warning
@@ -857,6 +862,11 @@ dotnet_diagnostic.CA2020.severity = warning
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2021
 # Enabled: True, Severity: warning
 dotnet_diagnostic.CA2021.severity = warning
+
+# CA2022: Avoid inexact read with 'Stream.Read'
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2022
+# Enabled: True, Severity: warning
+dotnet_diagnostic.CA2022.severity = warning
 
 # CA2100: Review SQL queries for security vulnerabilities
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2100

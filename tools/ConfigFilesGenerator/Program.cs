@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using NuGet.Common;
 using NuGet.Configuration;
+using NuGet.Frameworks;
 using NuGet.Packaging.Core;
 using NuGet.Packaging.Signing;
 using NuGet.Protocol.Core.Types;
@@ -18,7 +19,8 @@ using System.Text.RegularExpressions;
 var rootFolder = GetRootFolderPath();
 
 var writtenFiles = 0;
-await Parallel.ForEachAsync(GetReferencedNuGetPackages(), async (item, cancellationToken) =>
+var packages = await GetAllReferencedNuGetPackages();
+await Parallel.ForEachAsync(packages, async (item, cancellationToken) =>
 {
     var (packageId, packageVersion) = item;
 
@@ -39,7 +41,7 @@ await Parallel.ForEachAsync(GetReferencedNuGetPackages(), async (item, cancellat
             var analyzer = (DiagnosticAnalyzer)Activator.CreateInstance(type)!;
             foreach (var diagnostic in analyzer.SupportedDiagnostics)
             {
-                rules.Add(new AnalyzerRule(diagnostic.Id, diagnostic.Title.ToString(CultureInfo.InvariantCulture), diagnostic.HelpLinkUri, diagnostic.IsEnabledByDefault, diagnostic.DefaultSeverity, diagnostic.IsEnabledByDefault ? diagnostic.DefaultSeverity : null));
+                rules.Add(new AnalyzerRule(diagnostic.Id, diagnostic.Title.ToString(CultureInfo.InvariantCulture).Trim(), diagnostic.HelpLinkUri, diagnostic.IsEnabledByDefault, diagnostic.DefaultSeverity, diagnostic.IsEnabledByDefault ? diagnostic.DefaultSeverity : null));
             }
         }
     }
@@ -90,14 +92,15 @@ await Parallel.ForEachAsync(GetReferencedNuGetPackages(), async (item, cancellat
             sb.AppendLine();
         }
 
+        var text = sb.ToString().ReplaceLineEndings("\n");
         if (File.Exists(configurationFilePath))
         {
-            if (File.ReadAllText(configurationFilePath).ReplaceLineEndings() == sb.ToString().ReplaceLineEndings())
+            if (File.ReadAllText(configurationFilePath).ReplaceLineEndings("\n") == text)
                 return;
         }
 
         configurationFilePath.CreateParentDirectory();
-        await File.WriteAllTextAsync(configurationFilePath, sb.ToString(), cancellationToken);
+        await File.WriteAllTextAsync(configurationFilePath, text, cancellationToken);
         Interlocked.Increment(ref writtenFiles);
 
         static string GetSeverity(DiagnosticSeverity? severity)
@@ -117,7 +120,74 @@ await Parallel.ForEachAsync(GetReferencedNuGetPackages(), async (item, cancellat
 
 return writtenFiles;
 
-async IAsyncEnumerable<(string Id, string Version)> GetReferencedNuGetPackages()
+
+async Task<(string Id, NuGetVersion Version)[]> GetAllReferencedNuGetPackages()
+{
+    var foundPackages = new HashSet<SourcePackageDependencyInfo>();
+
+    var cache = new SourceCacheContext();
+    var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
+    var resource = await repository.GetResourceAsync<PackageMetadataResource>();
+
+    foreach (var package in GetReferencedNuGetPackages())
+    {
+        // Find the latest version if no version is specified
+        var version = package.Version is null ? null : NuGetVersion.Parse(package.Version);
+        if (version is null)
+        {
+            var metadata = await resource.GetMetadataAsync(package.Id, includePrerelease: true, includeUnlisted: false, cache, NullLogger.Instance, CancellationToken.None);
+            version = metadata.MaxBy(metadata => metadata.Identity.Version)!.Identity.Version;
+        }
+
+        var packageIdentity = new PackageIdentity(package.Id, version);
+        await ListAllPackageDependencies(packageIdentity, [repository], NuGetFramework.AnyFramework, cache, NullLogger.Instance, foundPackages, CancellationToken.None);
+    }
+
+    return foundPackages.Select(p => (p.Id, p.Version)).ToArray();
+
+    static async Task ListAllPackageDependencies(
+        PackageIdentity package,
+        IEnumerable<SourceRepository> repositories,
+        NuGetFramework framework,
+        SourceCacheContext cache,
+        ILogger logger,
+        HashSet<SourcePackageDependencyInfo> dependencies,
+        CancellationToken cancellationToken)
+    {
+        if (dependencies.Contains(package))
+        {
+            return;
+        }
+
+        foreach (var repository in repositories)
+        {
+            var dependencyInfoResource = await repository.GetResourceAsync<DependencyInfoResource>();
+            var dependencyInfo = await dependencyInfoResource.ResolvePackage(package, framework, cache, logger, cancellationToken);
+
+            if (dependencyInfo == null)
+            {
+                continue;
+            }
+
+            if (dependencies.Add(dependencyInfo))
+            {
+                foreach (var dependency in dependencyInfo.Dependencies)
+                {
+                    await ListAllPackageDependencies(
+                        new PackageIdentity(dependency.Id, dependency.VersionRange.MinVersion),
+                        repositories,
+                        framework,
+                        cache,
+                        logger,
+                        dependencies,
+                        cancellationToken);
+                }
+            }
+        }
+    }
+}
+
+IEnumerable<(string Id, string? Version)> GetReferencedNuGetPackages()
 {
     var nuspecPath = rootFolder / "Meziantou.DotNet.CodingStandard.nuspec";
     var document = XDocument.Load(nuspecPath);
@@ -126,18 +196,11 @@ async IAsyncEnumerable<(string Id, string Version)> GetReferencedNuGetPackages()
     {
         yield return value;
     }
-
-    // Add Net analyzers
-    var cache = new SourceCacheContext();
-    var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
-    var resource = await repository.GetResourceAsync<PackageMetadataResource>();
-
-    foreach (var package in new[] { "Microsoft.CodeAnalysis.NetAnalyzers", /*"Microsoft.CodeAnalysis.CSharp.CodeStyle"*/ })
+    
+    // Add analyzers from the .NET SDK
+    foreach (var package in new[] { "Microsoft.CodeAnalysis.NetAnalyzers", /* "Microsoft.CodeAnalysis.CSharp.CodeStyle" */ })
     {
-        var metadata = await resource.GetMetadataAsync(package, includePrerelease: true, includeUnlisted: false, cache, NullLogger.Instance, CancellationToken.None);
-        var max = metadata.MaxBy(metadata => metadata.Identity.Version)!;
-
-        yield return (package, max.Identity.Version.ToString());
+        yield return (package, null);
     }
 }
 
@@ -158,7 +221,7 @@ static FullPath GetRootFolderPath()
     return path;
 }
 
-static async Task<Assembly[]> GetAnalyzerReferences(string packageId, string version)
+static async Task<Assembly[]> GetAnalyzerReferences(string packageId, NuGetVersion  version)
 {
     ILogger logger = NullLogger.Instance;
     CancellationToken cancellationToken = CancellationToken.None;
@@ -171,14 +234,14 @@ static async Task<Assembly[]> GetAnalyzerReferences(string packageId, string ver
     var repository = Repository.Factory.GetCoreV3(source);
     var resource = await repository.GetResourceAsync<FindPackageByIdResource>();
 
-    var package = GlobalPackagesFolderUtility.GetPackage(new PackageIdentity(packageId, new NuGetVersion(version)), globalPackagesFolder);
+    var package = GlobalPackagesFolderUtility.GetPackage(new PackageIdentity(packageId, version), globalPackagesFolder);
     if (package is null || package.Status is DownloadResourceResultStatus.NotFound)
     {
         // Download the package
         using var packageStream = new MemoryStream();
         await resource.CopyNupkgToStreamAsync(
             packageId,
-            new NuGetVersion(version),
+            version,
             packageStream,
             cache,
             logger,
@@ -189,7 +252,7 @@ static async Task<Assembly[]> GetAnalyzerReferences(string packageId, string ver
         // Add it to the global package folder
         package = await GlobalPackagesFolderUtility.AddPackageAsync(
             source,
-            new PackageIdentity(packageId, new NuGetVersion(version)),
+            new PackageIdentity(packageId, version),
             packageStream,
             globalPackagesFolder,
             parentId: Guid.Empty,

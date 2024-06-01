@@ -771,3 +771,23 @@ dotnet_diagnostic.MA0153.severity = warning
 # Enabled: True, Severity: suggestion
 dotnet_diagnostic.MA0154.severity = suggestion
 
+# MA0155: Do not use async void methods
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0155.md
+# Enabled: False, Severity: warning
+dotnet_diagnostic.MA0155.severity = warning
+
+# MA0156: Use 'Async' suffix when a method returns IAsyncEnumerable<T>
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0156.md
+# Enabled: False, Severity: warning
+dotnet_diagnostic.MA0156.severity = none
+
+# MA0157: Do not use 'Async' suffix when a method does not return IAsyncEnumerable<T>
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0157.md
+# Enabled: False, Severity: warning
+dotnet_diagnostic.MA0157.severity = none
+
+# MA0158: Use System.Threading.Lock
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0158.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0158.severity = warning
+
