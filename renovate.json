@@ -1,26 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
-  ],
-  "schedule": ["before 5am on monday"],
-  "packageRules": [
-    {
-      "matchPackagePatterns": [".*"],
-      "groupName": "all",
-      "automerge": true
-    }
-  ],
-  "regexManagers": [
-    {
-      "description": "nuspec files manager",
-      "fileMatch": ["\\.nuspec$"],
-      "matchStringsStrategy": "any",
-      "matchStrings": [
-        "<dependency\\s+id=\"(?<depName>.*?)\"\\s+version=\"(?<currentValue>.*?)\"\\s*\\/>"
-      ],
-      "datasourceTemplate": "nuget",
-      "versioningTemplate": "nuget"
-    }
+    "github>meziantou/renovate-config",
+    ":automergeAll"
   ]
 }
