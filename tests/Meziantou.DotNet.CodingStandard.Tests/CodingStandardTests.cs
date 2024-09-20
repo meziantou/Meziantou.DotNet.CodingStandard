@@ -7,12 +7,14 @@ using Xunit.Abstractions;
 
 namespace Meziantou.DotNet.CodingStandard.Tests;
 
-public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelper) : IClassFixture<PackageFixture>
+public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHelper testOutputHelper) : IClassFixture<PackageFixture>
 {
+    protected abstract string CreateGlobalJsonContent();
+
     [Fact]
     public async Task BannedSymbolsAreReported()
     {
-        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
         project.AddCsprojFile();
         project.AddFile("sample.cs", """_ = System.DateTime.Now;""");
         var data = await project.BuildAndGetOutput();
@@ -22,7 +24,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
     [Fact]
     public async Task WarningsAsErrorOnGitHubActions()
     {
-        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
         project.AddCsprojFile();
         project.AddFile("sample.cs", """_ = System.DateTime.Now;""");
         var data = await project.BuildAndGetOutput(["/p:GITHUB_ACTIONS=true"]);
@@ -32,7 +34,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
     [Fact]
     public async Task NamingConvention_Invalid()
     {
-        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
         project.AddCsprojFile();
         project.AddFile("sample.cs", """
             _ = "";
@@ -53,7 +55,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
     [Fact]
     public async Task NamingConvention_Valid()
     {
-        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
         project.AddCsprojFile();
         project.AddFile("sample.cs", """
             _ = "";
@@ -69,9 +71,59 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
     }
 
     [Fact]
+    public async Task CodingStyle_UseExpression()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
+        project.AddCsprojFile();
+        project.AddFile("Program.cs", """
+            A();
+
+            static void A()
+            {
+                System.Console.WriteLine();
+            }
+            """);
+        var data = await project.BuildAndGetOutput(["--configuration", "Release"]);
+        Assert.False(data.HasWarning());
+        Assert.False(data.HasError());
+    }
+    
+    [Fact]
+    public async Task LocalEditorConfigCanOverrideSettings()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
+        project.AddCsprojFile();
+        project.AddFile("Program.cs", """
+            _ = "";
+
+            class Sample
+            {
+                public static void A()
+                {
+                    B();
+
+                    static void B()
+                    {
+                        System.Console.WriteLine();
+                    }
+                }
+            }
+            
+            """);
+        project.AddFile(".editorconfig", """
+            [*.cs]      
+            csharp_style_expression_bodied_local_functions = true:warning
+            """);
+
+        var data = await project.BuildAndGetOutput(["--configuration", "Debug"]);
+        Assert.True(data.HasWarning());
+        Assert.False(data.HasError());
+    }
+
+    [Fact]
     public async Task NuGetAuditIsReportedAsErrorOnGitHubActions()
     {
-        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
         project.AddCsprojFile(nuGetPackages: [("System.Net.Http", "4.3.3")]);
         project.AddFile("Program.cs", """System.Console.WriteLine();""");
         var data = await project.BuildAndGetOutput(["/p:GITHUB_ACTIONS=true"]);
@@ -82,7 +134,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
     [Fact]
     public async Task NuGetAuditIsReportedAsWarning()
     {
-        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
         project.AddCsprojFile(nuGetPackages: [("System.Net.Http", "4.3.3")]);
         project.AddFile("Program.cs", """System.Console.WriteLine();""");
         var data = await project.BuildAndGetOutput();
@@ -94,8 +146,11 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
     [Fact]
     public async Task MSBuildWarningsAsError()
     {
-        await using var project = new ProjectBuilder(fixture, testOutputHelper);
-        project.AddFile("Program.cs", """System.Console.WriteLine();""");
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
+        project.AddFile("Program.cs", """
+            System.Console.WriteLine();
+            
+            """);
         project.AddCsprojFile(additionalProjectElements: [
             new XElement("Target", new XAttribute("Name", "Custom"), new XAttribute("BeforeTargets", "Build"),
                 new XElement("Warning", new XAttribute("Text", "CustomWarning")))]);
@@ -107,7 +162,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
     [Fact]
     public async Task MSBuildWarningsAsError_NotEnableOnDebug()
     {
-        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
         project.AddFile("Program.cs", """System.Console.WriteLine();""");
         project.AddCsprojFile(additionalProjectElements: [
             new XElement("Target", new XAttribute("Name", "Custom"), new XAttribute("BeforeTargets", "Build"),
@@ -120,7 +175,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
     [Fact]
     public async Task CA1708_NotReportedForFileLocalTypes()
     {
-        await using var project = new ProjectBuilder(fixture, testOutputHelper);
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
         project.AddCsprojFile();
         project.AddFile("Sample1.cs", """
             System.Console.WriteLine()l
@@ -150,7 +205,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
         private readonly TemporaryDirectory _directory;
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public ProjectBuilder(PackageFixture fixture, ITestOutputHelper testOutputHelper)
+        public ProjectBuilder(PackageFixture fixture, ITestOutputHelper testOutputHelper, CodingStandardTests test)
         {
             _testOutputHelper = testOutputHelper;
 
@@ -176,7 +231,7 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
                 </configuration>
                 """);
 
-            File.Copy(PathHelpers.GetRootDirectory() / "global.json", _directory.FullPath / "global.json");
+            _directory.CreateTextFile("global.json", test.CreateGlobalJsonContent());
         }
 
         public ProjectBuilder AddFile(string relativePath, string content)
@@ -315,4 +370,28 @@ public class UnitTest1(PackageFixture fixture, ITestOutputHelper testOutputHelpe
             return Text;
         }
     }
+}
+
+public sealed class CodingStandardTestsNet8_0(PackageFixture fixture, ITestOutputHelper testOutputHelper) : CodingStandardTests(fixture, testOutputHelper)
+{
+    override protected string CreateGlobalJsonContent() => """
+        {
+            "sdk": {
+                "version": "8.0.100",
+                "rollForward": "latestFeature"
+            }
+        }
+        """;
+}
+
+public sealed class CodingStandardTestsNet9_0(PackageFixture fixture, ITestOutputHelper testOutputHelper) : CodingStandardTests(fixture, testOutputHelper)
+{
+    override protected string CreateGlobalJsonContent() => """
+        {
+            "sdk": {
+                "version": "9.0.100",
+                "rollForward": "9.0.100-rc.1.24452.12"
+            }
+        }
+        """;
 }
