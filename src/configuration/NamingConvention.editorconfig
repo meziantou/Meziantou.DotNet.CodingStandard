@@ -1,5 +1,5 @@
 is_global = true
-global_level = -1
+global_level = 0
 
 dotnet_naming_style.non_private_static_field_style.capitalization = pascal_case
 

@@ -1,5 +1,5 @@
 is_global = true
-global_level = -1
+global_level = 0
 
 charset = utf-8-bom
 indent_style = space
