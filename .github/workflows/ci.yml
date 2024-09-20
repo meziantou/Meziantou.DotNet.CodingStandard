@@ -34,15 +34,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: |
-            8.0.x
-            9.0.100-rc.1.24452.12
       - uses: actions/setup-dotnet@v4
       - run: |
           try
           {
-            $(Invoke-WebRequest "https://www.nuget.org/api/v2/package/Meziantou.DotNet.CodingStandard/").BaseResponse.RequestMessage.RequestUri -match "meziantou\.dotnet\.codingstandard\.1\.0\.([0-9]+).nupkg$"
+            $(Invoke-WebRequest "https://www.nuget.org/api/v2/package/Meziantou.DotNet.CodingStandard/").BaseResponse.RequestMessage.RequestUri -match "meziantou\.dotnet\.codingstandard\.1\.0\.([0-9]+).nupkg"
             $NewVersion = "1.0.$([int]$Matches.1 + 1)"
           }
           catch
@@ -67,8 +63,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.100-rc.1.24452.12
       - run: dotnet test tests/Meziantou.DotNet.CodingStandard.Tests/Meziantou.DotNet.CodingStandard.Tests.csproj
 
   deploy:
