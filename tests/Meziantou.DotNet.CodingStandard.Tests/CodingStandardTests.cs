@@ -4,12 +4,23 @@ using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using Meziantou.Framework;
 using Xunit.Abstractions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Meziantou.DotNet.CodingStandard.Tests;
 
-public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHelper testOutputHelper) : IClassFixture<PackageFixture>
+public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHelper testOutputHelper, string dotnetChannel) : IClassFixture<PackageFixture>
 {
-    protected abstract string CreateGlobalJsonContent();
+    private async Task<string> CreateGlobalJsonContent()
+    {
+        var version = await DotnetVersions.GetLatestVersionAsync(dotnetChannel);
+        return $$"""
+        {
+            "sdk": {
+                "version": "{{version}}"
+            }
+        }
+        """;
+    }
 
     [Fact]
     public async Task BannedSymbolsAreReported()
@@ -87,7 +98,7 @@ public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHel
         Assert.False(data.HasWarning());
         Assert.False(data.HasError());
     }
-    
+
     [Fact]
     public async Task LocalEditorConfigCanOverrideSettings()
     {
@@ -204,11 +215,12 @@ public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHel
 
         private readonly TemporaryDirectory _directory;
         private readonly ITestOutputHelper _testOutputHelper;
+        private readonly CodingStandardTests _test;
 
         public ProjectBuilder(PackageFixture fixture, ITestOutputHelper testOutputHelper, CodingStandardTests test)
         {
             _testOutputHelper = testOutputHelper;
-
+            _test = test;
             _directory = TemporaryDirectory.Create();
             _directory.CreateTextFile("NuGet.config", $"""
                 <configuration>
@@ -230,8 +242,6 @@ public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHel
                   </packageSourceMapping>
                 </configuration>
                 """);
-
-            _directory.CreateTextFile("global.json", test.CreateGlobalJsonContent());
         }
 
         public ProjectBuilder AddFile(string relativePath, string content)
@@ -263,6 +273,7 @@ public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHel
             var content = $"""
                 <Project Sdk="Microsoft.NET.Sdk">
                   <PropertyGroup>
+                    <ComputeNETCoreBuildOutputFiles>false</ComputeNETCoreBuildOutputFiles>
                     <OutputType>exe</OutputType>
                     <TargetFramework>net$(NETCoreAppMaximumVersion)</TargetFramework>
                     <ImplicitUsings>enable</ImplicitUsings>
@@ -272,7 +283,7 @@ public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHel
                   {propertiesElement}
                   {packagesElement}
                   <ItemGroup>
-                    <PackageReference Include="Meziantou.DotNet.CodingStandard" Version="999.9.9" />
+                    <PackageReference Include="Meziantou.DotNet.CodingStandard" Version="*" />
                   </ItemGroup>
                   {string.Join('\n', additionalProjectElements?.Select(e => e.ToString()) ?? [])}
                 </Project>                
@@ -284,6 +295,10 @@ public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHel
 
         public async Task<BuildResult> BuildAndGetOutput(string[] buildArguments = null)
         {
+            string dotnetVersion = await _test.CreateGlobalJsonContent();
+            _testOutputHelper.WriteLine("Global.json version:\n" + dotnetVersion);
+            _directory.CreateTextFile("global.json", dotnetVersion);
+
             var psi = new ProcessStartInfo("dotnet")
             {
                 WorkingDirectory = _directory.FullPath,
@@ -372,26 +387,11 @@ public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHel
     }
 }
 
-public sealed class CodingStandardTestsNet8_0(PackageFixture fixture, ITestOutputHelper testOutputHelper) : CodingStandardTests(fixture, testOutputHelper)
+public sealed class CodingStandardTestsNet8_0(PackageFixture fixture, ITestOutputHelper testOutputHelper) : CodingStandardTests(fixture, testOutputHelper, "8.0")
 {
-    override protected string CreateGlobalJsonContent() => """
-        {
-            "sdk": {
-                "version": "8.0.100",
-                "rollForward": "latestFeature"
-            }
-        }
-        """;
+
 }
 
-public sealed class CodingStandardTestsNet9_0(PackageFixture fixture, ITestOutputHelper testOutputHelper) : CodingStandardTests(fixture, testOutputHelper)
+public sealed class CodingStandardTestsNet9_0(PackageFixture fixture, ITestOutputHelper testOutputHelper) : CodingStandardTests(fixture, testOutputHelper, "9.0")
 {
-    override protected string CreateGlobalJsonContent() => """
-        {
-            "sdk": {
-                "version": "9.0.100",
-                "rollForward": "9.0.100-rc.1.24452.12"
-            }
-        }
-        """;
 }

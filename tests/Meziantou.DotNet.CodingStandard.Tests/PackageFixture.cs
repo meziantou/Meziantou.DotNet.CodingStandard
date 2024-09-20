@@ -11,6 +11,20 @@ public sealed class PackageFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
+        if (Environment.GetEnvironmentVariable("CI") != null && Environment.GetEnvironmentVariable("NuGetDirectory") is { } path)
+        {
+            var files = Directory.GetFiles(path, "*.nupkg");
+            if (files.Length > 0)
+            {
+                foreach (var file in files)
+                {
+                    File.Copy(file, _packageDirectory.FullPath / Path.GetFileName(file));
+                }
+
+                return;
+            }
+        }
+
         // Build NuGet package
         var nugetPath = FullPath.GetTempPath() / $"nuget-{Guid.NewGuid()}.exe";
         await DownloadFileAsync("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", nugetPath);
