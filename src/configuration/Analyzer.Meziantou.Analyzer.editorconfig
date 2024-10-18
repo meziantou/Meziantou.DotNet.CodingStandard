@@ -816,7 +816,7 @@ dotnet_diagnostic.MA0162.severity = none
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0163.severity = warning
 
-# MA0164: Use parentheses to not pattern clearer
+# MA0164: Use parentheses to make not pattern clearer
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0164.md
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0164.severity = warning
