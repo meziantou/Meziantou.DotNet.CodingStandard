@@ -801,3 +801,23 @@ dotnet_diagnostic.MA0159.severity = suggestion
 # Enabled: True, Severity: suggestion
 dotnet_diagnostic.MA0160.severity = suggestion
 
+# MA0161: UseShellExecute must be explicitly set
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0161.md
+# Enabled: False, Severity: suggestion
+dotnet_diagnostic.MA0161.severity = none
+
+# MA0162: Use Process.Start overload with ProcessStartInfo
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0162.md
+# Enabled: False, Severity: suggestion
+dotnet_diagnostic.MA0162.severity = none
+
+# MA0163: UseShellExecute must be false when redirecting standard input or output
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0163.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0163.severity = warning
+
+# MA0164: Use parentheses to not pattern clearer
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0164.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0164.severity = warning
+

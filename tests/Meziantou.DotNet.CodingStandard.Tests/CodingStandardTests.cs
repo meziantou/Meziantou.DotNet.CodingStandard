@@ -100,6 +100,21 @@ public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHel
     }
 
     [Fact]
+    public async Task CodingStyle_ExpressionIsNeverUsed()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
+        project.AddCsprojFile();
+        project.AddFile("Program.cs", """
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine();
+
+            """);
+        var data = await project.BuildAndGetOutput(["--configuration", "Release"]);
+        Assert.False(data.HasWarning());
+        Assert.False(data.HasError());
+    }
+
+    [Fact]
     public async Task LocalEditorConfigCanOverrideSettings()
     {
         await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
