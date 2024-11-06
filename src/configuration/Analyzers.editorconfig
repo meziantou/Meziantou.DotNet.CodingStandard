@@ -25,6 +25,9 @@ dotnet_diagnostic.IDE0052.severity = warning
 # Null check can be simplified
 dotnet_diagnostic.IDE0270.severity = silent
 
+# Use primary constructor
+dotnet_diagnostic.IDE0290.severity = silent
+
 # Remove unnecessary value assignment
 dotnet_diagnostic.IDE0059.severity = warning
 csharp_style_unused_value_assignment_preference = discard_variable
