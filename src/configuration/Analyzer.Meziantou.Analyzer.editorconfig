@@ -821,3 +821,8 @@ dotnet_diagnostic.MA0163.severity = warning
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0164.severity = warning
 
+# MA0165: Make interpolated string
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0165.md
+# Enabled: True, Severity: silent
+dotnet_diagnostic.MA0165.severity = silent
+

@@ -6,14 +6,23 @@ dotnet_style_prefer_foreach_explicit_cast_in_source=when_strongly_typed
 # Remove unnecessary import
 dotnet_diagnostic.IDE0005.severity = suggestion
 
+# Use expression body for method
+dotnet_diagnostic.IDE0022.severity = suggestion
+
 # Remove unreachable code
 dotnet_diagnostic.IDE0035.severity = warning
+
+# 'if' statement can be simplified
+dotnet_diagnostic.IDE0045.severity = suggestion
 
 # Remove unused private member
 dotnet_diagnostic.IDE0051.severity = warning
 
 # Remove unread private member
 dotnet_diagnostic.IDE0052.severity = warning
+
+# Null check can be simplified
+dotnet_diagnostic.IDE0270.severity = suggestion
 
 # Remove unnecessary value assignment
 dotnet_diagnostic.IDE0059.severity = warning
