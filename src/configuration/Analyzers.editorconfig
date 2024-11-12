@@ -131,6 +131,12 @@ dotnet_diagnostic.IDE0065.severity = suggestion
 # Use switch expression
 dotnet_diagnostic.IDE0066.severity = silent
 
+# Populate switch
+dotnet_diagnostic.IDE0072.severity = silent
+
+# Use pattern matching
+dotnet_diagnostic.IDE0078.severity = suggestion
+
 # Prefer null check over type check
 dotnet_diagnostic.IDE0150.severity = suggestion
 
