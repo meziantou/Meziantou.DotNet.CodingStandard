@@ -119,11 +119,11 @@ csharp_style_unused_value_assignment_preference = discard_variable
 # Remove unused parameter
 dotnet_diagnostic.IDE0060.severity = warning
 
+# Use expression body for local functions
+dotnet_diagnostic.IDE0061.severity = silent
+
 # Make local function static
 dotnet_diagnostic.IDE0062.severity = suggestion
-
-# Use expression body for local functions
-dotnet_diagnostic.IDE0066.severity = silent
 
 # 'using' directive placement
 dotnet_diagnostic.IDE0065.severity = suggestion
