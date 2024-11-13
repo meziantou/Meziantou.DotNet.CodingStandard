@@ -97,6 +97,9 @@ dotnet_diagnostic.IDE0044.severity = warning
 dotnet_diagnostic.IDE0045.severity = silent
 dotnet_diagnostic.IDE0046.severity = silent
 
+# Parentheses can be removed
+dotnet_diagnostic.IDE0047.severity = suggestion
+
 # Use language keywords instead of framework type names for type references
 dotnet_diagnostic.IDE0049.severity = warning
 
@@ -143,11 +146,17 @@ dotnet_diagnostic.IDE0150.severity = suggestion
 # Namespace declaration preferences
 dotnet_diagnostic.IDE0161.severity = suggestion
 
+# Lambda expression can be removed
+dotnet_diagnostic.IDE0200.severity = suggestion
+
 # Null check can be simplified
 dotnet_diagnostic.IDE0270.severity = silent
 
 # Use primary constructor
 dotnet_diagnostic.IDE0290.severity = silent
+
+# Collection initialization can be simplified
+dotnet_diagnostic.IDE0300.severity = suggestion
 
 # Collection expression can be simplified
 dotnet_diagnostic.IDE0301.severity = suggestion
