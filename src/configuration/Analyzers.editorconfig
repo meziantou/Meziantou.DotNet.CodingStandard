@@ -149,6 +149,9 @@ dotnet_diagnostic.IDE0161.severity = suggestion
 # Lambda expression can be removed
 dotnet_diagnostic.IDE0200.severity = suggestion
 
+# Convert to top-level statements
+dotnet_diagnostic.IDE0210.severity = suggestion
+
 # Null check can be simplified
 dotnet_diagnostic.IDE0270.severity = silent
 
