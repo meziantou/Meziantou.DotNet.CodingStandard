@@ -67,10 +67,6 @@ jobs:
           name: nuget
           path: ${{ env.NuGetDirectory }}
       - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: |
-            9.0.x
-            8.0.x
       - run: dotnet --info
       - run: dotnet test tests/Meziantou.DotNet.CodingStandard.Tests/Meziantou.DotNet.CodingStandard.Tests.csproj --logger "trx;LogFileName=test_results.trx" --results-directory test_results
       - uses: actions/upload-artifact@v4

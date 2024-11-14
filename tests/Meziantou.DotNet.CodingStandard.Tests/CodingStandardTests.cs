@@ -4,24 +4,11 @@ using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using Meziantou.Framework;
 using Xunit.Abstractions;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Meziantou.DotNet.CodingStandard.Tests;
 
-public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHelper testOutputHelper, string dotnetChannel) : IClassFixture<PackageFixture>
+public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelper testOutputHelper) : IClassFixture<PackageFixture>
 {
-    private async Task<string> CreateGlobalJsonContent()
-    {
-        var version = await DotnetVersions.GetLatestVersionAsync(dotnetChannel);
-        return $$"""
-        {
-            "sdk": {
-                "version": "{{version}}"
-            }
-        }
-        """;
-    }
-
     [Fact]
     public async Task BannedSymbolsAreReported()
     {
@@ -310,9 +297,17 @@ public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHel
 
         public async Task<BuildResult> BuildAndGetOutput(string[] buildArguments = null)
         {
-            string dotnetVersion = await _test.CreateGlobalJsonContent();
-            _testOutputHelper.WriteLine("Global.json version:\n" + dotnetVersion);
-            _directory.CreateTextFile("global.json", dotnetVersion);
+            var globaljsonPsi = new ProcessStartInfo("dotnet", "new global.json")
+            {
+                WorkingDirectory = _directory.FullPath,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+
+                RedirectStandardError = true,
+            };
+            var result = await globaljsonPsi.RunAsTaskAsync();
+            _testOutputHelper.WriteLine("Process exit code: " + result.ExitCode);
+            _testOutputHelper.WriteLine(result.Output.ToString());
 
             var psi = new ProcessStartInfo("dotnet")
             {
@@ -334,7 +329,7 @@ public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHel
             psi.Environment.Remove("CI");
             psi.Environment.Remove("GITHUB_ACTIONS");
 
-            var result = await psi.RunAsTaskAsync();
+            result = await psi.RunAsTaskAsync();
             _testOutputHelper.WriteLine("Process exit code: " + result.ExitCode);
             _testOutputHelper.WriteLine(result.Output.ToString());
 
@@ -400,13 +395,4 @@ public abstract class CodingStandardTests(PackageFixture fixture, ITestOutputHel
             return Text;
         }
     }
-}
-
-public sealed class CodingStandardTestsNet8_0(PackageFixture fixture, ITestOutputHelper testOutputHelper) : CodingStandardTests(fixture, testOutputHelper, "8.0")
-{
-
-}
-
-public sealed class CodingStandardTestsNet9_0(PackageFixture fixture, ITestOutputHelper testOutputHelper) : CodingStandardTests(fixture, testOutputHelper, "9.0")
-{
 }
