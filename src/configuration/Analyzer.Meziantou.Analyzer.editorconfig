@@ -781,7 +781,7 @@ dotnet_diagnostic.MA0155.severity = warning
 # Enabled: False, Severity: warning
 dotnet_diagnostic.MA0156.severity = none
 
-# MA0157: Do not use 'Async' suffix when a method does not return IAsyncEnumerable<T>
+# MA0157: Do not use 'Async' suffix when a method returns IAsyncEnumerable<T>
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0157.md
 # Enabled: False, Severity: warning
 dotnet_diagnostic.MA0157.severity = none
@@ -824,5 +824,5 @@ dotnet_diagnostic.MA0164.severity = warning
 # MA0165: Make interpolated string
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0165.md
 # Enabled: True, Severity: silent
-dotnet_diagnostic.MA0165.severity = silent
+dotnet_diagnostic.MA0165.severity = none
 
