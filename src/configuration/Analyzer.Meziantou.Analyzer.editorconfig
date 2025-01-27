@@ -781,7 +781,7 @@ dotnet_diagnostic.MA0155.severity = warning
 # Enabled: False, Severity: warning
 dotnet_diagnostic.MA0156.severity = none
 
-# MA0157: Do not use 'Async' suffix when a method does not return IAsyncEnumerable<T>
+# MA0157: Do not use 'Async' suffix when a method returns IAsyncEnumerable<T>
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0157.md
 # Enabled: False, Severity: warning
 dotnet_diagnostic.MA0157.severity = none
@@ -800,4 +800,29 @@ dotnet_diagnostic.MA0159.severity = suggestion
 # Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0160.md
 # Enabled: True, Severity: suggestion
 dotnet_diagnostic.MA0160.severity = suggestion
+
+# MA0161: UseShellExecute must be explicitly set
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0161.md
+# Enabled: False, Severity: suggestion
+dotnet_diagnostic.MA0161.severity = none
+
+# MA0162: Use Process.Start overload with ProcessStartInfo
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0162.md
+# Enabled: False, Severity: suggestion
+dotnet_diagnostic.MA0162.severity = none
+
+# MA0163: UseShellExecute must be false when redirecting standard input or output
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0163.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0163.severity = warning
+
+# MA0164: Use parentheses to make not pattern clearer
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0164.md
+# Enabled: True, Severity: warning
+dotnet_diagnostic.MA0164.severity = warning
+
+# MA0165: Make interpolated string
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0165.md
+# Enabled: True, Severity: silent
+dotnet_diagnostic.MA0165.severity = none
 
