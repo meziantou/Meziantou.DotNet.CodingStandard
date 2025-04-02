@@ -193,7 +193,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
         project.AddCsprojFile();
         project.AddFile("Sample1.cs", """
-            System.Console.WriteLine()l
+            System.Console.WriteLine();
 
             class A {}
             
@@ -220,6 +220,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         project.AddCsprojFile();
         project.AddFile("Program.cs", """
             Console.WriteLine();
+
             """);
 
         var data = await project.BuildAndGetOutput(["--configuration", "Release"]);
@@ -235,6 +236,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         project.AddCsprojFile();
         project.AddFile("Program.cs", """
             Console.WriteLine();
+
             """);
 
         var data = await project.PackAndGetOutput(["--configuration", "Release"]);
