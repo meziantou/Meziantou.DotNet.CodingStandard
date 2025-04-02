@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.IO.Compression;
+using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
@@ -211,6 +213,52 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         Assert.False(data.HasWarning("CA1708"));
     }
 
+    [Fact]
+    public async Task PdbShouldBeEmbedded_Dotnet_Build()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
+        project.AddCsprojFile();
+        project.AddFile("Program.cs", """
+            Console.WriteLine();
+            """);
+
+        var data = await project.BuildAndGetOutput(["--configuration", "Release"]);
+
+        var outputFiles = Directory.GetFiles(project.RootFolder / "bin",  "*", SearchOption.AllDirectories);
+        await AssertPdbIsEmbedded(outputFiles);
+    }
+
+    [Fact]
+    public async Task PdbShouldBeEmbedded_Dotnet_Pack()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
+        project.AddCsprojFile();
+        project.AddFile("Program.cs", """
+            Console.WriteLine();
+            """);
+
+        var data = await project.PackAndGetOutput(["--configuration", "Release"]);
+
+        var extractedPath = project.RootFolder / "extracted";
+        var files = Directory.GetFiles(project.RootFolder / "bin" / "Release");
+        Assert.Single(files); // Only the .nupkg should be generated
+        var nupkg = files.Single(f => f.EndsWith(".nupkg", StringComparison.OrdinalIgnoreCase));
+        ZipFile.ExtractToDirectory(nupkg, extractedPath);
+
+        var outputFiles = Directory.GetFiles(extractedPath, "*", SearchOption.AllDirectories);
+        await AssertPdbIsEmbedded(outputFiles);
+    }
+
+    private static async Task AssertPdbIsEmbedded(string[] outputFiles)
+    {
+        Assert.DoesNotContain(outputFiles, f => f.EndsWith(".pdb", StringComparison.OrdinalIgnoreCase));
+        var dllPath = outputFiles.Single(f => f.EndsWith(".dll", StringComparison.OrdinalIgnoreCase));
+        await using var stream = File.OpenRead(dllPath);
+        var peReader = new PEReader(stream);
+        var debug = peReader.ReadDebugDirectory();
+        Assert.Contains(debug, entry => entry.Type == DebugDirectoryEntryType.EmbeddedPortablePdb);
+    }
+
     private sealed class ProjectBuilder : IAsyncDisposable
     {
         private const string SarifFileName = "BuildOutput.sarif";
@@ -218,6 +266,8 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         private readonly TemporaryDirectory _directory;
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly CodingStandardTests _test;
+
+        public FullPath RootFolder => _directory.FullPath;
 
         public ProjectBuilder(PackageFixture fixture, ITestOutputHelper testOutputHelper, CodingStandardTests test)
         {
@@ -294,8 +344,17 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
             File.WriteAllText(_directory.FullPath / "test.csproj", content);
             return this;
         }
+        public Task<BuildResult> BuildAndGetOutput(string[] buildArguments = null)
+        {
+            return this.ExecuteDotnetCommandAndGetOutput("build", buildArguments);
+        }
 
-        public async Task<BuildResult> BuildAndGetOutput(string[] buildArguments = null)
+        public Task<BuildResult> PackAndGetOutput(string[] buildArguments = null)
+        {
+            return this.ExecuteDotnetCommandAndGetOutput("pack", buildArguments);
+        }
+
+        private async Task<BuildResult> ExecuteDotnetCommandAndGetOutput(string command, string[] buildArguments = null)
         {
             var globaljsonPsi = new ProcessStartInfo("dotnet", "new global.json")
             {
@@ -316,7 +375,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
             };
-            psi.ArgumentList.Add("build");
+            psi.ArgumentList.Add(command);
             if (buildArguments != null)
             {
                 foreach (var arg in buildArguments)
