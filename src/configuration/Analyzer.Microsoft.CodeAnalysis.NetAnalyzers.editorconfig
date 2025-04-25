@@ -787,6 +787,16 @@ dotnet_diagnostic.CA1872.severity = suggestion
 # Enabled: True, Severity: suggestion
 dotnet_diagnostic.CA1873.severity = suggestion
 
+# CA1874: Use 'Regex.IsMatch'
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1874
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1874.severity = suggestion
+
+# CA1875: Use 'Regex.Count'
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1875
+# Enabled: True, Severity: suggestion
+dotnet_diagnostic.CA1875.severity = suggestion
+
 # CA2000: Dispose objects before losing scope
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2000
 # Enabled: False, Severity: warning
