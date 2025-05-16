@@ -13,8 +13,8 @@
     
     <repository type="git" url="$RepositoryUrl$" commit="$RepositoryCommit$" branch="$RepositoryBranch$" />
     <dependencies>
-      <dependency id="Meziantou.Analyzer" version="2.0.200" />
-      <dependency id="Microsoft.CodeAnalysis.BannedApiAnalyzers" version="3.3.4" />
+      <dependency id="Meziantou.Analyzer" version="2.0.201" />
+      <dependency id="Microsoft.CodeAnalysis.BannedApiAnalyzers" version="4.14.0" />
     </dependencies>
   </metadata>
   <files>
