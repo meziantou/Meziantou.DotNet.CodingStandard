@@ -846,3 +846,8 @@ dotnet_diagnostic.MA0168.severity = none
 # Enabled: True, Severity: warning
 dotnet_diagnostic.MA0169.severity = warning
 
+# MA0170: Type cannot be used as an attribute argument
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0170.md
+# Enabled: False, Severity: warning
+dotnet_diagnostic.MA0170.severity = none
+

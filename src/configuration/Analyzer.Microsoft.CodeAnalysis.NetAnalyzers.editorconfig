@@ -893,6 +893,11 @@ dotnet_diagnostic.CA2023.severity = warning
 # Enabled: True, Severity: warning
 dotnet_diagnostic.CA2024.severity = warning
 
+# CA2025: Do not pass 'IDisposable' instances into unawaited tasks
+# Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2025
+# Enabled: True, Severity: warning
+dotnet_diagnostic.CA2025.severity = warning
+
 # CA2100: Review SQL queries for security vulnerabilities
 # Help link: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2100
 # Enabled: False, Severity: warning
