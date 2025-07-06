@@ -1,0 +1,13 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/tests/">
+    <Project Path="tests/Meziantou.DotNet.CodingStandard.Tests/Meziantou.DotNet.CodingStandard.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/ConfigFilesGenerator/ConfigFilesGenerator.csproj" />
+  </Folder>
+</Solution>
