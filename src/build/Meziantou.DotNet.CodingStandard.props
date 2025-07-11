@@ -1,6 +1,8 @@
 <Project>
     <Import Project="$(MSBuildThisFileDirectory)/ReproducibleBuilds.props" />
     <PropertyGroup>
+        <OptimizeVsTestRun Condition="'$(OptimizeVsTestRun)' == ''">true</OptimizeVsTestRun>
+
         <RestoreUseStaticGraphEvaluation Condition="'$(RestoreUseStaticGraphEvaluation)' == ''">true</RestoreUseStaticGraphEvaluation>
         <ReportAnalyzer Condition="'$(ReportAnalyzer)' == ''">true</ReportAnalyzer>
         <Features Condition="'$(Features)' == ''">strict</Features>
@@ -31,4 +33,14 @@
         <!-- Add all editorconfig files -->
         <EditorConfigFiles Include="$(MSBuildThisFileDirectory)\..\configuration\*.editorconfig" />
     </ItemGroup>
+
+    <!-- When running dotnet test, disable analyzers to compile faster and get feedback earlier -->
+    <!-- This assume that most CI uses an actual dotnet build/publish/pack in parallel of dotnet test -->
+    <Target Name="DisableAnalyzerWhenRunningTests" BeforeTargets="VSTest" Condition="'$(OptimizeVsTestRun)' == 'true'">
+        <PropertyGroup>
+            <NuGetAudit>false</NuGetAudit>
+            <RunAnalyzers>false</RunAnalyzers>
+        </PropertyGroup>
+    </Target> 
+
 </Project>
