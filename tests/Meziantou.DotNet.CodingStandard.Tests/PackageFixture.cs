@@ -9,7 +9,7 @@ public sealed class PackageFixture : IAsyncLifetime
 
     public FullPath PackageDirectory => _packageDirectory.FullPath;
 
-    public async Task InitializeAsync()
+    public async ValueTask InitializeAsync()
     {
         if (Environment.GetEnvironmentVariable("CI") != null && Environment.GetEnvironmentVariable("NuGetDirectory") is { } path)
         {
@@ -35,7 +35,7 @@ public sealed class PackageFixture : IAsyncLifetime
         await psi.RunAsTaskAsync();
     }
 
-    public async Task DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         await _packageDirectory.DisposeAsync();
     }

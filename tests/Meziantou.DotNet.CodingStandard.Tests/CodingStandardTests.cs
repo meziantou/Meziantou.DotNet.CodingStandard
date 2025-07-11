@@ -5,9 +5,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using Meziantou.Framework;
-using Xunit.Abstractions;
 
 namespace Meziantou.DotNet.CodingStandard.Tests;
+
+// TODO upload attachment to reports
 
 public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelper testOutputHelper) : IClassFixture<PackageFixture>
 {
@@ -225,7 +226,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
 
         var data = await project.BuildAndGetOutput(["--configuration", "Release"]);
 
-        var outputFiles = Directory.GetFiles(project.RootFolder / "bin",  "*", SearchOption.AllDirectories);
+        var outputFiles = Directory.GetFiles(project.RootFolder / "bin", "*", SearchOption.AllDirectories);
         await AssertPdbIsEmbedded(outputFiles);
     }
 
@@ -249,6 +250,50 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
 
         var outputFiles = Directory.GetFiles(extractedPath, "*", SearchOption.AllDirectories);
         await AssertPdbIsEmbedded(outputFiles);
+    }
+
+    [Fact]
+    public async Task DotnetTestSkipAnalyzers()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
+        project.AddCsprojFile(
+            properties: [("IsTestProject", "true")],
+            nuGetPackages: [("Microsoft.NET.Test.Sdk", "17.14.1"), ("xunit", "2.9.3"), ("xunit.runner.visualstudio", "3.1.1")]
+        );
+        project.AddFile("sample.cs", """
+            public class Sample
+            {
+                [Xunit.Fact]
+                public void Test()
+                {
+                    _ = System.DateTime.Now; // This should not be reported as an error
+                }
+            }
+            """);
+        var data = await project.TestAndGetOutput();
+        Assert.False(data.HasWarning("RS0030"));
+    }
+
+    [Fact]
+    public async Task DotnetTestSkipAnalyzers_OptOut()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
+        project.AddCsprojFile(
+            properties: [("IsTestProject", "true"), ("OptimizeVsTestRun", "false")],
+            nuGetPackages: [("Microsoft.NET.Test.Sdk", "17.14.1"), ("xunit", "2.9.3"), ("xunit.runner.visualstudio", "3.1.1")]
+        );
+        project.AddFile("sample.cs", """
+            public class Sample
+            {
+                [Xunit.Fact]
+                public void Test()
+                {
+                    _ = System.DateTime.Now; // This should not be reported as an error
+                }
+            }
+            """);
+        var data = await project.TestAndGetOutput();
+        Assert.True(data.HasWarning("RS0030"));
     }
 
     private static async Task AssertPdbIsEmbedded(string[] outputFiles)
@@ -311,7 +356,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
             {
                 foreach (var prop in properties)
                 {
-                    propertiesElement.Add(new XElement(prop.Name), prop.Value);
+                    propertiesElement.Add(new XElement(prop.Name, prop.Value));
                 }
             }
 
@@ -346,6 +391,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
             File.WriteAllText(_directory.FullPath / "test.csproj", content);
             return this;
         }
+
         public Task<BuildResult> BuildAndGetOutput(string[] buildArguments = null)
         {
             return this.ExecuteDotnetCommandAndGetOutput("build", buildArguments);
@@ -354,6 +400,11 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         public Task<BuildResult> PackAndGetOutput(string[] buildArguments = null)
         {
             return this.ExecuteDotnetCommandAndGetOutput("pack", buildArguments);
+        }
+
+        public Task<BuildResult> TestAndGetOutput(string[] buildArguments = null)
+        {
+            return this.ExecuteDotnetCommandAndGetOutput("test", buildArguments);
         }
 
         private async Task<BuildResult> ExecuteDotnetCommandAndGetOutput(string command, string[] buildArguments = null)

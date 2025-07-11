@@ -1,6 +1,8 @@
 <Project>
     <Import Project="$(MSBuildThisFileDirectory)/ReproducibleBuilds.props" />
     <PropertyGroup>
+        <OptimizeVsTestRun Condition="'$(OptimizeVsTestRun)' == ''">true</OptimizeVsTestRun>
+
         <RestoreUseStaticGraphEvaluation Condition="'$(RestoreUseStaticGraphEvaluation)' == ''">true</RestoreUseStaticGraphEvaluation>
         <ReportAnalyzer Condition="'$(ReportAnalyzer)' == ''">true</ReportAnalyzer>
         <Features Condition="'$(Features)' == ''">strict</Features>
@@ -31,4 +33,12 @@
         <!-- Add all editorconfig files -->
         <EditorConfigFiles Include="$(MSBuildThisFileDirectory)\..\configuration\*.editorconfig" />
     </ItemGroup>
+
+    <Target Name="DisableAnalyzerWhenRunningTests" BeforeTargets="VSTest" Condition="'$(OptimizeVsTestRun)' == 'true'">
+        <PropertyGroup>
+            <NuGetAudit>false</NuGetAudit>
+            <RunAnalyzers>false</RunAnalyzers>
+        </PropertyGroup>
+    </Target> 
+
 </Project>
