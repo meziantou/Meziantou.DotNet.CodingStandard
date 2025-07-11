@@ -5,10 +5,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using Meziantou.Framework;
+using Microsoft.Build.Logging.StructuredLogger;
+using Task = System.Threading.Tasks.Task;
 
 namespace Meziantou.DotNet.CodingStandard.Tests;
-
-// TODO upload attachment to reports
 
 public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelper testOutputHelper) : IClassFixture<PackageFixture>
 {
@@ -20,6 +20,9 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         project.AddFile("sample.cs", """_ = System.DateTime.Now;""");
         var data = await project.BuildAndGetOutput();
         Assert.True(data.HasWarning("RS0030"));
+
+        var files = data.GetBinLogFiles();
+        Assert.Contains(files, f => f.EndsWith("BannedSymbols.txt", StringComparison.OrdinalIgnoreCase));
     }
 
     [Fact]
@@ -437,6 +440,8 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
                 }
             }
 
+            psi.ArgumentList.Add("/bl");
+
             // Remove parent environment variables
             psi.Environment.Remove("CI");
             psi.Environment.Remove("GITHUB_ACTIONS");
@@ -448,13 +453,16 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
             var bytes = File.ReadAllBytes(_directory.FullPath / SarifFileName);
             var sarif = JsonSerializer.Deserialize<SarifFile>(bytes);
             _testOutputHelper.WriteLine("Sarif result:\n" + string.Join("\n", sarif.AllResults().Select(r => r.ToString())));
-            return new BuildResult(result.ExitCode, result.Output, sarif);
+
+            var binlogContent = File.ReadAllBytes(_directory.FullPath / "msbuild.binlog");
+            TestContext.Current.AddAttachment("msbuild.binlog", binlogContent, "application/octet-stream");
+            return new BuildResult(result.ExitCode, result.Output, sarif, binlogContent);
         }
 
         public ValueTask DisposeAsync() => _directory.DisposeAsync();
     }
 
-    private sealed record BuildResult(int ExitCode, ProcessOutputCollection ProcessOutput, SarifFile SarifFile)
+    private sealed record BuildResult(int ExitCode, ProcessOutputCollection ProcessOutput, SarifFile SarifFile, byte[] BinaryLogContent)
     {
         public bool OutputContains(string value, StringComparison stringComparison = StringComparison.Ordinal) => ProcessOutput.Any(line => line.Text.Contains(value, stringComparison));
         public bool OutputDoesNotContain(string value, StringComparison stringComparison = StringComparison.Ordinal) => !ProcessOutput.Any(line => line.Text.Contains(value, stringComparison));
@@ -464,6 +472,13 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         public bool HasWarning() => SarifFile.AllResults().Any(r => r.Level == "warning");
         public bool HasWarning(string ruleId) => SarifFile.AllResults().Any(r => r.Level == "warning" && r.RuleId == ruleId);
         public bool HasNote(string ruleId) => SarifFile.AllResults().Any(r => r.Level == "note" && r.RuleId == ruleId);
+
+        public IReadOnlyCollection<string> GetBinLogFiles()
+        {
+            using var stream = new MemoryStream(BinaryLogContent);
+            var build = Serialization.ReadBinLog(stream);
+            return [.. build.SourceFiles.Select(file => file.FullPath)];
+        }
     }
 
     private sealed class SarifFile

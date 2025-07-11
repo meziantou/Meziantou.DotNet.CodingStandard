@@ -8,6 +8,12 @@
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\configuration\BannedSymbols.txt" Condition="$(IncludeDefaultBannedSymbols) == 'true'" Visible="false" />
   </ItemGroup>
 
+  <Target Name="IncludeBannedSymbolsToBinLog" AfterTargets="CoreCompile">
+    <ItemGroup>
+      <EmbedInBinlog Include="@(AdditionalFiles)" Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(Filename)%(Extension)', '^BannedSymbols(\..+)?\.txt$'))" />
+    </ItemGroup>
+  </Target>
+
   <!-- Disable packages -->
   <Target Name="Disable_SponsorLink" BeforeTargets="CoreCompile" Condition="$(Disable_SponsorLink) != 'false'">
     <ItemGroup>
