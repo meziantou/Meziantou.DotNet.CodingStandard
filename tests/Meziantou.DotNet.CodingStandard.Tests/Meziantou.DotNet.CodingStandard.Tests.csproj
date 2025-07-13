@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Meziantou.Framework" Version="4.4.3" />
-    <PackageReference Include="Meziantou.Framework.TemporaryDirectory" Version="1.0.15" />
+    <PackageReference Include="Meziantou.Framework" Version="4.4.4" />
+    <PackageReference Include="Meziantou.Framework.TemporaryDirectory" Version="1.0.16" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="MSBuild.StructuredLogger" Version="2.3.17" />
     <PackageReference Include="xunit.v3" Version="2.0.3" />
