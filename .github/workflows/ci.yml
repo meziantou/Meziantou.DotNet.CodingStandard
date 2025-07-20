@@ -102,10 +102,12 @@ jobs:
               {
                 # Only push to nuget.org if we are on the main branch and a relevant file was found (nuspec or change under src/)
                 $Changes = git diff --name-only HEAD^1 HEAD -- Meziantou.DotNet.CodingStandard.nuspec 'src/**/*'
-                Write-Host "Changes: $Changes"
                 if ($Changes) {
+                  Write-Host "Changes: $Changes"
                   Write-Host "Pushing to nuget.org"
                   & dotnet nuget push "$($file.FullName)" --api-key "$env:NuGetApiKey" --source https://api.nuget.org/v3/index.json --force-english-output
+                } else {
+                  Write-Host "No relevant changes detected, skipping push to nuget.org"
                 }
               }
           }
