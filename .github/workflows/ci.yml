@@ -80,28 +80,33 @@ jobs:
     needs: [create_nuget, lint_config, test]
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/download-artifact@v4
         with:
           name: nuget
           path: ${{ env.NuGetDirectory }}
       - uses: actions/setup-dotnet@v4
-      - run: |
+      - name: Publish NuGet packages
+        env:
+          NuGetApiKey: ${{ secrets.NuGetApiKey }}
+          FeedzApiKey: ${{ secrets.FEEDZ_APIKEY }}
+        run: |
           Write-Host "Current ref: $env:GITHUB_REF"
           Write-Host "Searching nupkg in folder: ${{ env.NuGetDirectory }}"
           $files = Get-ChildItem "${{ env.NuGetDirectory }}/*" -Recurse -Include *.nupkg
           foreach($file in $files) {
               Write-Host "Pushing NuGet package: $($file.FullName)"
+              & dotnet nuget push "$($file.FullName)" --api-key "$env:FeedzApiKey" --source https://f.feedz.io/meziantou/meziantou-dotnet-codingstandard/nuget/index.json --force-english-output --skip-duplicate
               if ($env:GITHUB_REF -eq 'refs/heads/main')
               {
-                & dotnet nuget push "$($file.FullName)" --api-key "$env:NuGetApiKey" --source https://api.nuget.org/v3/index.json --force-english-output --skip-duplicate
-              }
-              else
-              {
-                & dotnet nuget push "$($file.FullName)" --api-key "$env:FeedzApiKey" --source https://f.feedz.io/meziantou/meziantou-dotnet-codingstandard/nuget/index.json --force-english-output --skip-duplicate
+                # Only push to nuget.org if we are on the main branch and a relevant file was found (nuspec or change under src/)
+                $Changes = git diff --name-only HEAD^1 HEAD -- Meziantou.DotNet.CodingStandard.nuspec 'src/**/*'
+                Write-Host "Changes: $Changes"
+                if ($Changes) {
+                  Write-Host "Pushing to nuget.org"
+                  & dotnet nuget push "$($file.FullName)" --api-key "$env:NuGetApiKey" --source https://api.nuget.org/v3/index.json --force-english-output
+                }
               }
           }
-        name: Publish NuGet packages
-        if: always()
-        env:
-          NuGetApiKey: ${{ secrets.NuGetApiKey }}
-          FeedzApiKey: ${{ secrets.FEEDZ_APIKEY }}
+        
