@@ -13,6 +13,16 @@ namespace Meziantou.DotNet.CodingStandard.Tests;
 public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelper testOutputHelper) : IClassFixture<PackageFixture>
 {
     [Fact]
+    public async Task ImplicitUsings()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
+        project.AddCsprojFile();
+        project.AddFile("sample.cs", """_ = new StringBuilder();""");
+        var data = await project.BuildAndGetOutput();
+        Assert.False(data.HasError());
+    }
+  
+    [Fact]
     public async Task BannedSymbolsAreReported()
     {
         await using var project = new ProjectBuilder(fixture, testOutputHelper, this);

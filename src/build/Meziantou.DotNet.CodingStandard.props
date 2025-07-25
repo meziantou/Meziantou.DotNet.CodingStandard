@@ -1,46 +1,54 @@
 <Project>
-    <Import Project="$(MSBuildThisFileDirectory)/ReproducibleBuilds.props" />
+  <Import Project="$(MSBuildThisFileDirectory)/ReproducibleBuilds.props" />
+  <PropertyGroup>
+    <ImplicitUsings Condition="'$(ImplicitUsings)' == ''">enable</ImplicitUsings>
+    <Nullable Condition="'$(Nullable)' == ''">enable</Nullable>
+
+    <OptimizeVsTestRun Condition="'$(OptimizeVsTestRun)' == ''">true</OptimizeVsTestRun>
+
+    <RestoreUseStaticGraphEvaluation Condition="'$(RestoreUseStaticGraphEvaluation)' == ''">true</RestoreUseStaticGraphEvaluation>
+    <ReportAnalyzer Condition="'$(ReportAnalyzer)' == ''">true</ReportAnalyzer>
+    <Features Condition="'$(Features)' == ''">strict</Features>
+    <Deterministic Condition="'$(Deterministic)' == ''">true</Deterministic>
+    <EnableNETAnalyzers Condition="'$(EnableNETAnalyzers)' == ''">true</EnableNETAnalyzers>
+    <AnalysisLevel Condition="'$(AnalysisLevel)' == ''">latest-all</AnalysisLevel>
+    <NoWarn>$(NoWarn);CA1014</NoWarn>
+    <AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)' == ''">true</AllowUnsafeBlocks>
+    <LangVersion Condition="'$(LangVersion)' == ''">latest</LangVersion>
+
+    <MSBuildTreatWarningsAsErrors Condition="'$(MSBuildTreatWarningsAsErrors)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</MSBuildTreatWarningsAsErrors>
+    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild Condition="'$(EnforceCodeStyleInBuild)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Label="NuGet Audit">
+    <NuGetAudit Condition="'$(NuGetAudit)' == ''">true</NuGetAudit>
+    <NuGetAuditMode Condition="'$(NuGetAuditMode)' == ''">all</NuGetAuditMode>
+    <NuGetAuditLevel Condition="'$(NuGetAuditLevel)' == ''">low</NuGetAuditLevel>
+    <WarningsAsErrors Condition="$(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release'">(WarningsAsErrors);NU1900;NU1901;NU1902;NU1903;NU1904</WarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AccelerateBuildsInVisualStudio Condition="'$(AccelerateBuildsInVisualStudio)' == ''">true</AccelerateBuildsInVisualStudio>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(Language)' == 'C#' AND ('$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable')">
+    <Using Include="System.Diagnostics.CodeAnalysis" />
+    <Using Include="System.Text" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <!-- Add all editorconfig files -->
+    <EditorConfigFiles Include="$(MSBuildThisFileDirectory)\..\configuration\*.editorconfig" />
+  </ItemGroup>
+
+  <!-- When running dotnet test, disable analyzers to compile faster and get feedback earlier -->
+  <!-- This assume that most CI uses an actual dotnet build/publish/pack in parallel of dotnet test -->
+  <Target Name="DisableAnalyzerWhenRunningTests" BeforeTargets="VSTest" Condition="'$(OptimizeVsTestRun)' == 'true'">
     <PropertyGroup>
-        <OptimizeVsTestRun Condition="'$(OptimizeVsTestRun)' == ''">true</OptimizeVsTestRun>
-
-        <RestoreUseStaticGraphEvaluation Condition="'$(RestoreUseStaticGraphEvaluation)' == ''">true</RestoreUseStaticGraphEvaluation>
-        <ReportAnalyzer Condition="'$(ReportAnalyzer)' == ''">true</ReportAnalyzer>
-        <Features Condition="'$(Features)' == ''">strict</Features>
-        <Deterministic Condition="'$(Deterministic)' == ''">true</Deterministic>
-        <EnableNETAnalyzers Condition="'$(EnableNETAnalyzers)' == ''">true</EnableNETAnalyzers>
-        <AnalysisLevel Condition="'$(AnalysisLevel)' == ''">latest-all</AnalysisLevel>
-        <NoWarn>$(NoWarn);CA1014</NoWarn>
-        <AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)' == ''">true</AllowUnsafeBlocks>
-        <LangVersion Condition="'$(LangVersion)' == ''">latest</LangVersion>
-        
-        <MSBuildTreatWarningsAsErrors Condition="'$(MSBuildTreatWarningsAsErrors)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</MSBuildTreatWarningsAsErrors>
-        <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</TreatWarningsAsErrors>
-        <EnforceCodeStyleInBuild Condition="'$(EnforceCodeStyleInBuild)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</EnforceCodeStyleInBuild>
+      <NuGetAudit>false</NuGetAudit>
+      <RunAnalyzers>false</RunAnalyzers>
     </PropertyGroup>
-
-    <PropertyGroup Label="NuGet Audit">
-        <NuGetAudit Condition="'$(NuGetAudit)' == ''">true</NuGetAudit>
-        <NuGetAuditMode Condition="'$(NuGetAuditMode)' == ''">all</NuGetAuditMode>
-        <NuGetAuditLevel Condition="'$(NuGetAuditLevel)' == ''">low</NuGetAuditLevel>
-        <WarningsAsErrors Condition="$(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release'">(WarningsAsErrors);NU1900;NU1901;NU1902;NU1903;NU1904</WarningsAsErrors>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <AccelerateBuildsInVisualStudio Condition="'$(AccelerateBuildsInVisualStudio)' == ''">true</AccelerateBuildsInVisualStudio>
-    </PropertyGroup>
-    
-    <ItemGroup>
-        <!-- Add all editorconfig files -->
-        <EditorConfigFiles Include="$(MSBuildThisFileDirectory)\..\configuration\*.editorconfig" />
-    </ItemGroup>
-
-    <!-- When running dotnet test, disable analyzers to compile faster and get feedback earlier -->
-    <!-- This assume that most CI uses an actual dotnet build/publish/pack in parallel of dotnet test -->
-    <Target Name="DisableAnalyzerWhenRunningTests" BeforeTargets="VSTest" Condition="'$(OptimizeVsTestRun)' == 'true'">
-        <PropertyGroup>
-            <NuGetAudit>false</NuGetAudit>
-            <RunAnalyzers>false</RunAnalyzers>
-        </PropertyGroup>
-    </Target> 
+  </Target>
 
 </Project>
