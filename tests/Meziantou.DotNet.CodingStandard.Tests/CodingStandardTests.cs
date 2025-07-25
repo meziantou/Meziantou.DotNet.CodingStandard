@@ -3,9 +3,11 @@ using System.IO.Compression;
 using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
 using System.Xml.Linq;
 using Meziantou.Framework;
 using Microsoft.Build.Logging.StructuredLogger;
+using NuGet.Packaging;
 using Task = System.Threading.Tasks.Task;
 
 namespace Meziantou.DotNet.CodingStandard.Tests;
@@ -21,7 +23,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         var data = await project.BuildAndGetOutput();
         Assert.False(data.HasError());
     }
-  
+
     [Fact]
     public async Task BannedSymbolsAreReported()
     {
@@ -309,6 +311,40 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         Assert.True(data.HasWarning("RS0030"));
     }
 
+    [Fact]
+    public async Task NonMeziantouCsproj()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
+        project.AddCsprojFile(filename: "sample.csproj");
+        project.AddFile("Program.cs", """Console.WriteLine();""");
+        var data = await project.PackAndGetOutput();
+        Assert.Equal(0, data.ExitCode);
+
+        var package = Directory.GetFiles(project.RootFolder, "*.nupkg", SearchOption.AllDirectories).Single();
+        using var packageReader = new PackageArchiveReader(package);
+        var nuspecReader = await packageReader.GetNuspecReaderAsync(TestContext.Current.CancellationToken);
+        Assert.NotEqual("meziantou", nuspecReader.GetAuthors());
+        Assert.NotEqual("icon.png", nuspecReader.GetIcon());
+        Assert.DoesNotContain("icon.png", packageReader.GetFiles());
+    }
+
+    [Fact]
+    public async Task MeziantouCsproj()
+    {
+        await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
+        project.AddCsprojFile();
+        project.AddFile("Program.cs", """Console.WriteLine();""");
+        var data = await project.PackAndGetOutput();
+        Assert.Equal(0, data.ExitCode);
+
+        var package = Directory.GetFiles(project.RootFolder, "*.nupkg", SearchOption.AllDirectories).Single();
+        using var packageReader = new PackageArchiveReader(package);
+        var nuspecReader = await packageReader.GetNuspecReaderAsync(TestContext.Current.CancellationToken);
+        Assert.Equal("meziantou", nuspecReader.GetAuthors());
+        Assert.Equal("icon.png", nuspecReader.GetIcon());
+        Assert.Contains("icon.png", packageReader.GetFiles());
+    }
+
     private static async Task AssertPdbIsEmbedded(string[] outputFiles)
     {
         Assert.DoesNotContain(outputFiles, f => f.EndsWith(".pdb", StringComparison.OrdinalIgnoreCase));
@@ -362,7 +398,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
             return this;
         }
 
-        public ProjectBuilder AddCsprojFile((string Name, string Value)[] properties = null, (string Name, string Version)[] nuGetPackages = null, XElement[] additionalProjectElements = null)
+        public ProjectBuilder AddCsprojFile((string Name, string Value)[] properties = null, (string Name, string Version)[] nuGetPackages = null, XElement[] additionalProjectElements = null, string filename = "Meziantou.TestProject.csproj")
         {
             var propertiesElement = new XElement("PropertyGroup");
             if (properties != null)
@@ -401,7 +437,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
                 </Project>                
                 """;
 
-            File.WriteAllText(_directory.FullPath / "test.csproj", content);
+            File.WriteAllText(_directory.FullPath / filename, content);
             return this;
         }
 
@@ -460,9 +496,18 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
             _testOutputHelper.WriteLine("Process exit code: " + result.ExitCode);
             _testOutputHelper.WriteLine(result.Output.ToString());
 
-            var bytes = File.ReadAllBytes(_directory.FullPath / SarifFileName);
-            var sarif = JsonSerializer.Deserialize<SarifFile>(bytes);
-            _testOutputHelper.WriteLine("Sarif result:\n" + string.Join("\n", sarif.AllResults().Select(r => r.ToString())));
+            FullPath sarifPath = _directory.FullPath / SarifFileName;
+            SarifFile sarif = null;
+            if (File.Exists(sarifPath))
+            {
+                var bytes = File.ReadAllBytes(sarifPath);
+                sarif = JsonSerializer.Deserialize<SarifFile>(bytes);
+                _testOutputHelper.WriteLine("Sarif result:\n" + string.Join("\n", sarif.AllResults().Select(r => r.ToString())));
+            }
+            else
+            {
+                _testOutputHelper.WriteLine("Sarif file not found: " + sarifPath);
+            }
 
             var binlogContent = File.ReadAllBytes(_directory.FullPath / "msbuild.binlog");
             TestContext.Current.AddAttachment("msbuild.binlog", binlogContent, "application/octet-stream");

@@ -19,6 +19,8 @@
     <MSBuildTreatWarningsAsErrors Condition="'$(MSBuildTreatWarningsAsErrors)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</MSBuildTreatWarningsAsErrors>
     <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</TreatWarningsAsErrors>
     <EnforceCodeStyleInBuild Condition="'$(EnforceCodeStyleInBuild)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</EnforceCodeStyleInBuild>
+
+    <_IsMeziantouProject>$(MSBuildProjectName.StartsWith('Meziantou', StringComparison.OrdinalIgnoreCase))</_IsMeziantouProject>
   </PropertyGroup>
 
   <PropertyGroup Label="NuGet Audit">
@@ -40,6 +42,28 @@
   <ItemGroup>
     <!-- Add all editorconfig files -->
     <EditorConfigFiles Include="$(MSBuildThisFileDirectory)\..\configuration\*.editorconfig" />
+  </ItemGroup>
+
+  <!-- NuGet Package -->
+  <PropertyGroup>
+    <_PackageReadmeFilePath Condition="Exists('$(MSBuildProjectDirectory)\README.md')">$(MSBuildProjectDirectory)\README.md</_PackageReadmeFilePath>
+    <_PackageThirdPartyNoticesPath Condition="Exists('$(MSBuildProjectDirectory)\THIRD-PARTY-NOTICES.TXT')">$(MSBuildProjectDirectory)\THIRD-PARTY-NOTICES.TXT</_PackageThirdPartyNoticesPath>
+
+    <Authors Condition="'$(Authors)' == '' AND '$(_IsMeziantouProject)' == 'true'">meziantou</Authors>
+    <Company Condition="'$(Company)' == '' AND '$(_IsMeziantouProject)' == 'true'">meziantou</Company>
+
+    <_UseDefaultPackageIcon Condition="'$(PackageIcon)' == '' AND '$(_IsMeziantouProject)' == 'true'">true</_UseDefaultPackageIcon>
+    <_DefaultPackageIcon>$(MSBuildThisFileDirectory)\..\icon.png</_DefaultPackageIcon>
+
+    <PackageIcon Condition="'$(PackageIcon)' == '' AND '$(_IsMeziantouProject)' == 'true'">icon.png</PackageIcon>
+    <PackageLicenseExpression Condition="'$(PackageLicenseExpression)' == '' AND '$(_IsMeziantouProject)' == 'true'">MIT</PackageLicenseExpression>
+    <PackageReadmeFile Condition="$(_PackageReadmeFilePath) != ''">README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(_DefaultPackageIcon)" Pack="true" PackagePath="" Visible="false" Condition="'$(_UseDefaultPackageIcon)' == 'true'" />
+    <None Include="$(_PackageReadmeFilePath)" Pack="true" PackagePath="" Condition="$(_PackageReadmeFilePath) != ''" />
+    <None Include="$(_PackageThirdPartyNoticesPath)" Pack="true" PackagePath="" Condition="$(_PackageThirdPartyNoticesPath) != ''" />
   </ItemGroup>
 
   <!-- When running dotnet test, disable analyzers to compile faster and get feedback earlier -->
