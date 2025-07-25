@@ -15,7 +15,6 @@
     <NoWarn>$(NoWarn);CA1014</NoWarn>
     <AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)' == ''">true</AllowUnsafeBlocks>
     <LangVersion Condition="'$(LangVersion)' == ''">latest</LangVersion>
-    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 
     <MSBuildTreatWarningsAsErrors Condition="'$(MSBuildTreatWarningsAsErrors)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</MSBuildTreatWarningsAsErrors>
     <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' AND ($(ContinuousIntegrationBuild) == 'true' OR '$(Configuration)' == 'Release')">true</TreatWarningsAsErrors>
