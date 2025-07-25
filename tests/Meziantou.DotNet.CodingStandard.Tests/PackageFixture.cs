@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Meziantou.Framework;
 
 namespace Meziantou.DotNet.CodingStandard.Tests;
@@ -31,8 +31,16 @@ public sealed class PackageFixture : IAsyncLifetime
         var nuspecPath = PathHelpers.GetRootDirectory() / "Meziantou.DotNet.CodingStandard.nuspec";
 
         var psi = new ProcessStartInfo(nugetPath);
+        psi.RedirectStandardError = true;
+        psi.RedirectStandardOutput = true;
+        psi.UseShellExecute = false;
+        psi.CreateNoWindow = true;
         psi.ArgumentList.AddRange(["pack", nuspecPath, "-ForceEnglishOutput", "-Version", "999.9.9", "-OutputDirectory", _packageDirectory.FullPath]);
-        await psi.RunAsTaskAsync();
+        var result = await psi.RunAsTaskAsync();
+        if (result.ExitCode != 0)
+        {
+            Assert.Fail($"NuGet pack failed with exit code {result.ExitCode}. Output: {result.Output}");
+        }
     }
 
     public async ValueTask DisposeAsync()
