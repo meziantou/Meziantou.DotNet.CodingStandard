@@ -1,3 +1,4 @@
+# reference:https://raw.githubusercontent.com/meziantou/Meziantou.DotNet.CodingStandard/refs/heads/main/.editorconfig
 # Schema: http://EditorConfig.org
 # Docs: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
 
@@ -37,3 +38,5 @@ end_of_line = crlf
 [*.{htm,html,js,ts,css,scss,less}]
 indent_size = 2
 insert_final_newline = true
+# endreference
+
