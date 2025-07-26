@@ -317,6 +317,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
         project.AddCsprojFile(filename: "sample.csproj");
         project.AddFile("Program.cs", """Console.WriteLine();""");
+        project.AddFile("LICENSE.txt", """dummy""");
         var data = await project.PackAndGetOutput();
         Assert.Equal(0, data.ExitCode);
 
@@ -334,6 +335,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         await using var project = new ProjectBuilder(fixture, testOutputHelper, this);
         project.AddCsprojFile();
         project.AddFile("Program.cs", """Console.WriteLine();""");
+        project.AddFile("LICENSE.txt", """dummy""");
         var data = await project.PackAndGetOutput();
         Assert.Equal(0, data.ExitCode);
 
@@ -343,6 +345,7 @@ public sealed class CodingStandardTests(PackageFixture fixture, ITestOutputHelpe
         Assert.Equal("meziantou", nuspecReader.GetAuthors());
         Assert.Equal("icon.png", nuspecReader.GetIcon());
         Assert.Contains("icon.png", packageReader.GetFiles());
+        Assert.Contains("LICENSE.txt", packageReader.GetFiles());
     }
 
     private static async Task AssertPdbIsEmbedded(string[] outputFiles)

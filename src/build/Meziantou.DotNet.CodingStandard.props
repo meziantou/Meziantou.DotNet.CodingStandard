@@ -48,6 +48,7 @@
   <PropertyGroup>
     <_PackageReadmeFilePath Condition="Exists('$(MSBuildProjectDirectory)\README.md')">$(MSBuildProjectDirectory)\README.md</_PackageReadmeFilePath>
     <_PackageThirdPartyNoticesPath Condition="Exists('$(MSBuildProjectDirectory)\THIRD-PARTY-NOTICES.TXT')">$(MSBuildProjectDirectory)\THIRD-PARTY-NOTICES.TXT</_PackageThirdPartyNoticesPath>
+    <_LicensePath Condition="Exists($([MSBuild]::GetPathOfFileAbove('LICENSE.txt')))">$([MSBuild]::GetPathOfFileAbove('LICENSE.txt'))</_LicensePath>
 
     <Authors Condition="'$(Authors)' == '' AND '$(_IsMeziantouProject)' == 'true'">meziantou</Authors>
     <Company Condition="'$(Company)' == '' AND '$(_IsMeziantouProject)' == 'true'">meziantou</Company>
@@ -64,6 +65,7 @@
     <None Include="$(_DefaultPackageIcon)" Pack="true" PackagePath="" Visible="false" Condition="'$(_UseDefaultPackageIcon)' == 'true'" />
     <None Include="$(_PackageReadmeFilePath)" Pack="true" PackagePath="" Condition="$(_PackageReadmeFilePath) != ''" />
     <None Include="$(_PackageThirdPartyNoticesPath)" Pack="true" PackagePath="" Condition="$(_PackageThirdPartyNoticesPath) != ''" />
+    <None Include="$(_LicensePath)" Pack="true" PackagePath="" Condition="$(_LicensePath) != ''" />
   </ItemGroup>
 
   <!-- When running dotnet test, disable analyzers to compile faster and get feedback earlier -->
