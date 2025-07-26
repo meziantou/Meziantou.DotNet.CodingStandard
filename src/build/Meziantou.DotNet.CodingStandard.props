@@ -48,7 +48,7 @@
   <PropertyGroup>
     <_PackageReadmeFilePath Condition="Exists('$(MSBuildProjectDirectory)\README.md')">$(MSBuildProjectDirectory)\README.md</_PackageReadmeFilePath>
     <_PackageThirdPartyNoticesPath Condition="Exists('$(MSBuildProjectDirectory)\THIRD-PARTY-NOTICES.TXT')">$(MSBuildProjectDirectory)\THIRD-PARTY-NOTICES.TXT</_PackageThirdPartyNoticesPath>
-    <_LicensePath Condition="Exists($([MSBuild]::GetPathOfFileAbove('LICENSE.txt'))')">$([MSBuild]::GetPathOfFileAbove('LICENSE.txt'))</_LicensePath>
+    <_LicensePath Condition="Exists($([MSBuild]::GetPathOfFileAbove('LICENSE.txt')))">$([MSBuild]::GetPathOfFileAbove('LICENSE.txt'))</_LicensePath>
 
     <Authors Condition="'$(Authors)' == '' AND '$(_IsMeziantouProject)' == 'true'">meziantou</Authors>
     <Company Condition="'$(Company)' == '' AND '$(_IsMeziantouProject)' == 'true'">meziantou</Company>
