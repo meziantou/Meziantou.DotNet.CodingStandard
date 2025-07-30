@@ -65,7 +65,7 @@
     <None Include="$(_DefaultPackageIcon)" Pack="true" PackagePath="" Visible="false" Condition="'$(_UseDefaultPackageIcon)' == 'true'" />
     <None Include="$(_PackageReadmeFilePath)" Pack="true" PackagePath="" Condition="$(_PackageReadmeFilePath) != ''" />
     <None Include="$(_PackageThirdPartyNoticesPath)" Pack="true" PackagePath="" Condition="$(_PackageThirdPartyNoticesPath) != ''" />
-    <None Include="$(_LicensePath)" Pack="true" PackagePath="" Condition="$(_LicensePath) != ''" />
+    <None Include="$(_LicensePath)" Pack="true" PackagePath="" Visible="false" Condition="$(_LicensePath) != ''" />
   </ItemGroup>
 
   <!-- When running dotnet test, disable analyzers to compile faster and get feedback earlier -->
