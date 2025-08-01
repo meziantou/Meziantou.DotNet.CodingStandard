@@ -1,6 +1,7 @@
 <Project>
   <Import Project="$(MSBuildThisFileDirectory)/ReproducibleBuilds.props" />
   <PropertyGroup>
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
     <ImplicitUsings Condition="'$(ImplicitUsings)' == ''">enable</ImplicitUsings>
     <Nullable Condition="'$(Nullable)' == ''">enable</Nullable>
 
@@ -78,3 +79,4 @@
   </Target>
 
 </Project>
+
