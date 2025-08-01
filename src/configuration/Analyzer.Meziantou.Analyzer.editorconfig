@@ -851,3 +851,8 @@ dotnet_diagnostic.MA0169.severity = warning
 # Enabled: False, Severity: warning
 dotnet_diagnostic.MA0170.severity = none
 
+# MA0171: Use pattern matching instead of inequality operators for discrete value
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0171.md
+# Enabled: False, Severity: suggestion
+dotnet_diagnostic.MA0171.severity = none
+
