@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Meziantou.Framework" Version="4.4.6" />
+    <PackageReference Include="Meziantou.Framework" Version="4.4.8" />
     <PackageReference Include="Meziantou.Framework.TemporaryDirectory" Version="1.0.16" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="MSBuild.StructuredLogger" Version="2.3.17" />
