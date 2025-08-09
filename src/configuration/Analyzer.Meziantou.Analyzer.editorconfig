@@ -856,3 +856,8 @@ dotnet_diagnostic.MA0170.severity = none
 # Enabled: False, Severity: suggestion
 dotnet_diagnostic.MA0171.severity = none
 
+# MA0172: Both sides of the logical operation are identical
+# Help link: https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0172.md
+# Enabled: False, Severity: warning
+dotnet_diagnostic.MA0172.severity = suggestion
+
