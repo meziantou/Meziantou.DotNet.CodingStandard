@@ -24,14 +24,14 @@ jobs:
   lint_config:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-dotnet@v4
       - run: dotnet run --project=tools/ConfigFilesGenerator/ConfigFilesGenerator.csproj
 
   create_nuget:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-dotnet@v4
       - run: |
           try
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [create_nuget]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/download-artifact@v5
         with:
           name: nuget
@@ -79,7 +79,7 @@ jobs:
     runs-on: "ubuntu-latest"
     needs: [create_nuget, lint_config, test]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - uses: actions/download-artifact@v5
